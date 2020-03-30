@@ -3,6 +3,10 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const lessonSchema = new Schema({
+  id: {
+    type: Number,
+    required: true
+  },
   title: {
     type: String,
     required: true
@@ -15,6 +19,11 @@ const lessonSchema = new Schema({
     type: String,
     required: true
   }
-})
+},
+{
+  collection: 'lesson',
+  timestamps: true
+}
+)
 
 module.exports = mongoose.model('Lesson', lessonSchema)
