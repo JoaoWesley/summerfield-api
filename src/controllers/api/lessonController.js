@@ -1,24 +1,16 @@
-export const getLessons = (req, res) => {
-  const lessons = [{
-    lesson: {
-      id: 1,
-      title: 'Tyrion',
-      words: ['she', 'want'],
-      text: 'entire text'
-    }
-  }]
+import Lesson from '../../models/lessonModel'
 
-  res.json(lessons)
+export const getLessons = async (req, res) => {
+  Lesson.find(function (err, lessons) {
+    if (err) return console.error(err)
+    res.json(lessons)
+  })
 }
 
 export const getLessonById = (req, res) => {
   const params = req.params
-  const lesson = {
-    id: 5,
-    title: 'Sansa',
-    words: ['she', 'want'],
-    text: 'entire text'
-  }
-
-  res.json(lesson)
+  Lesson.find({ id: params.id }, function (err, lesson) {
+    if (err) return console.error(err)
+    res.json(lesson)
+  })
 }
