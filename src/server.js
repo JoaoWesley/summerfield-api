@@ -1,9 +1,15 @@
 import express from 'express'
+import { mongoConnection } from './config/database/mongodbConfig'
+import variables from './config/envVariablesConfig'
+import lessonRoute from './routes/api/lessonRoute'
 
+mongoConnection.connect()
 const app = express()
+
+app.use('/lesson', lessonRoute)
 
 app.get('/', (req, res) => {
   res.json({ ok: 'true' })
 })
 
-app.listen(3000)
+app.listen(variables.PORT)
