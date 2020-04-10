@@ -7,7 +7,7 @@ const lessonSchema = new Schema({
     type: String,
     required: true
   },
-  words: {
+  tokens: {
     type: Array,
     required: true
   },
