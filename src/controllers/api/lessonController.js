@@ -4,6 +4,7 @@ import HttpStatus from 'http-status-codes'
 import { ObjectId } from 'mongodb'
 import natural from 'natural'
 import wordStatusType from '../../commons/wordStatusType'
+import tokenType from '../../commons/tokenType'
 
 export const getLessons = async (req, res) => {
   const lessons = await LessonModel.find().exec()
@@ -15,18 +16,16 @@ export const getLessonById = async (req, res) => {
   const lesson = await LessonModel.findById(ObjectId(params.id)).exec()
   const userWords = (await WordsModel.findOne({ user: 'admin@gmail.com' }).exec()).words
 
-  lesson.words = lesson.words.map((word) => {
-    const wordDealtAlready = userWords.find((element) => element.text === word.text)
-    if (wordDealtAlready) {
-      return wordDealtAlready
+  lesson.tokens = lesson.tokens.map((token) => {
+    if (token.text.match(/[a-z]+/)) {
+      const wordDealtAlready = userWords.find((element) => element.text === token.text)
+      if (wordDealtAlready) {
+        token.status = wordDealtAlready.status
+        return token
+      }
     }
-
-    const wordbckp = word
-    word = {}
-    word.text = wordbckp
-    word.status = wordStatusType.NEW
-    console.log(word)
-    return word
+    token.status = wordStatusType.NEW
+    return token
   })
 
   res.json(lesson)
@@ -37,13 +36,20 @@ export const postLesson = async (req, res) => {
     title: req.body.title,
     text: req.body.text
   }
-  const tokenizer = new natural.AggressiveTokenizer()
+  const tokenizer = new natural.RegexpTokenizer({ pattern: /([a-zÀ-ÿ-][a-zÀ-ÿ-'`]+|[0-9._]+|.|!|\?|'|"|:|;|,|-)/i })
 
-  lesson.words = tokenizer.tokenize(req.body.text).map((word) => {
-    const text = word.toLowerCase()
-    word = {}
-    word.text = text
-    return word
+  lesson.tokens = tokenizer.tokenize(req.body.text).map((token) => {
+    const text = token.toLowerCase()
+    token = {}
+    token.text = text
+    if (text.match(/[a-z]+/)) {
+      token.type = tokenType.WORD
+    } else if (text.match(/[0-9]+/)) {
+      token.type = tokenType.NUMBER
+    } else {
+      token.type = tokenType.PUNCTUATION
+    }
+    return token
   })
 
   const lessonCreated = await LessonModel.create(lesson)

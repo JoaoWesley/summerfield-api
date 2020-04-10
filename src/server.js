@@ -4,11 +4,13 @@ import variables from './config/envVariablesConfig'
 import bodyParser from 'body-parser'
 import lessonRoute from './routes/api/lessonRoute'
 import wordRoute from './routes/api/WordRoute'
+import cors from 'cors'
 
 mongoConnection.connect()
 
 const app = express()
 
+app.use(cors())
 app.use(bodyParser.json())
 
 app.use('/lesson', lessonRoute)
