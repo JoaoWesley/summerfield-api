@@ -4,6 +4,7 @@ import variables from './config/envVariablesConfig'
 import bodyParser from 'body-parser'
 import lessonRoute from './routes/api/lessonRoute'
 import wordRoute from './routes/api/WordRoute'
+import studyRoute from './routes/api/StudyRoute'
 import cors from 'cors'
 
 mongoConnection.connect()
@@ -15,6 +16,7 @@ app.use(bodyParser.json())
 
 app.use('/lesson', lessonRoute)
 app.use('/word', wordRoute)
+app.use('/study', studyRoute)
 
 app.get('/', (req, res) => {
   res.json({ ok: 'true' })

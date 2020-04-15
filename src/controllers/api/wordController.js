@@ -14,7 +14,7 @@ export const postWords = async (req, res) => {
     if (userWords.find((element) => element.text === word.text)) {
       return word
     }
-  })
+  }).pop()
 
   await WordsModel.findOneAndUpdate({ user: 'admin@gmail.com' }, { $push: { words: { $each: newWords } } })
 

@@ -4,20 +4,20 @@ mongoose.set('useFindAndModify', false)
 
 const Schema = mongoose.Schema
 
-const WordsSchema = new Schema({
+const ItemsSchema = new Schema({
   user: {
     type: String,
     required: true
   },
-  words: {
+  items: {
     type: Array,
     required: true
   }
 },
 {
-  collection: 'words',
+  collection: 'study',
   timestamps: true
 }
 )
 
-module.exports = mongoose.model('Words', WordsSchema)
+module.exports = mongoose.model('Study', ItemsSchema)
