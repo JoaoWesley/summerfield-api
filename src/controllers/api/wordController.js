@@ -1,5 +1,6 @@
 import WordsModel from '../../models/wordsModel'
 import HttpStatus from 'http-status-codes'
+import wordStatusType from '../../commons/wordStatusType'
 
 export const postWords = async (req, res) => {
   const userWords = (await WordsModel.findOne({ user: 'admin@gmail.com' }).exec()).words
@@ -28,4 +29,23 @@ export const postWords = async (req, res) => {
 
   )
   res.status(HttpStatus.CREATED).end()
+}
+
+export const statusReport = async (req, res) => {
+  const userWords = (await WordsModel.findOne({ user: 'admin@gmail.com' }).exec()).words
+
+  const learningWords = userWords.filter((word) => word.status === wordStatusType.LEARNING)
+  const knownWords = userWords.filter((word) => word.status === wordStatusType.KNOWN)
+
+  res.status(HttpStatus.OK).json({
+    learning: {
+      count: learningWords.length,
+      words: learningWords
+    },
+
+    known: {
+      count: knownWords.length,
+      words: knownWords
+    }
+  })
 }
