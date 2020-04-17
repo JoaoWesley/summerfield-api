@@ -38,9 +38,10 @@ export const postLesson = async (req, res) => {
   }
   const tokenizer = new natural.RegexpTokenizer({ pattern: /([a-zÀ-ÿ-][a-zÀ-ÿ-'`]+|[0-9._]+|.|!|\?|'|"|:|;|,|-)/i })
 
-  lesson.tokens = tokenizer.tokenize(req.body.text).map((token) => {
+  lesson.tokens = tokenizer.tokenize(req.body.text).map((token, index) => {
     const text = token.toLowerCase()
     token = {}
+    token.index = index
     token.text = text
     if (text.match(/[a-z]+/)) {
       token.type = tokenType.WORD
