@@ -5,7 +5,8 @@ import natural from 'natural'
 export const postItem = async (req, res) => {
   const item = {
     wordPhrase: req.body.wordPhrase,
-    translation: req.body.translation
+    translation: req.body.translation,
+    wordContext: req.body.wordContext
   }
   await StudyModel.findOneAndUpdate({ user: 'admin@gmail.com' }, { $push: { items: item } })
   res.status(HttpStatus.CREATED).end()
