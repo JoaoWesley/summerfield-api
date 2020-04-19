@@ -17,17 +17,20 @@ export const postWords = async (req, res) => {
     }
   }).pop()
 
-  await WordsModel.findOneAndUpdate({ user: 'admin@gmail.com' }, { $push: { words: { $each: newWords } } })
+  if (newWords.length > 0) {
+    await WordsModel.findOneAndUpdate({ user: 'admin@gmail.com' }, { $push: { words: { $each: newWords } } })
+  }
 
-  await WordsModel.findOneAndUpdate(
-    { user: 'admin@gmail.com', 'words.text': learningWord.text },
-    {
-      $set: {
-        'words.$.status': learningWord.status
+  if (learningWord) {
+    await WordsModel.findOneAndUpdate(
+      { user: 'admin@gmail.com', 'words.text': learningWord.text },
+      {
+        $set: {
+          'words.$.status': learningWord.status
+        }
       }
-    }
-
-  )
+    )
+  }
   res.status(HttpStatus.CREATED).end()
 }
 
