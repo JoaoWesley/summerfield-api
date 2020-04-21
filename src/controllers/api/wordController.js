@@ -6,7 +6,7 @@ export const postWords = async (req, res) => {
   const userWords = (await WordsModel.findOne({ user: 'admin@gmail.com' }).exec()).words
 
   const newWords = req.body.words.filter((word) => {
-    if (!userWords.find((element) => element.text === word.text)) {
+    if (!userWords.find((element) => element.text === word.text.toLowerCase())) {
       return word
     }
   })

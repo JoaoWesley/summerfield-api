@@ -17,8 +17,8 @@ export const getLessonById = async (req, res) => {
   const userWords = (await WordsModel.findOne({ user: 'admin@gmail.com' }).exec()).words
 
   lesson.tokens = lesson.tokens.map((token) => {
-    if (token.text.match(/[a-z]+/)) {
-      const wordDealtAlready = userWords.find((element) => element.text === token.text)
+    if (token.text.match(/[a-z]+/i)) {
+      const wordDealtAlready = userWords.find((element) => element.text.toLowerCase() === token.text.toLowerCase())
       if (wordDealtAlready) {
         token.status = wordDealtAlready.status
         return token
@@ -39,11 +39,11 @@ export const postLesson = async (req, res) => {
   const tokenizer = new natural.RegexpTokenizer({ pattern: /([a-zÀ-ÿ-][a-zÀ-ÿ-'`]+|[0-9._]+|.|!|\?|'|"|:|;|,|-)/i })
 
   lesson.tokens = tokenizer.tokenize(req.body.text).map((token, index) => {
-    const text = token.toLowerCase()
+    const text = token
     token = {}
     token.index = index
     token.text = text
-    if (text.match(/[a-z]+/)) {
+    if (text.match(/[a-z]+/i)) {
       token.type = tokenType.WORD
     } else if (text.match(/[0-9]+/)) {
       token.type = tokenType.NUMBER
