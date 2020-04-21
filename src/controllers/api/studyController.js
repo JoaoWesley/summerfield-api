@@ -12,14 +12,14 @@ export const postItem = async (req, res) => {
   const userItems = (await StudyModel.findOne({ user: 'admin@gmail.com' }).exec()).items
   let newItem = null
 
-  if (!userItems.find((element) => element.wordPhrase === item.wordPhrase)) {
+  if (!userItems.find((element) => element.wordPhrase.toLowerCase() === item.wordPhrase.toLowerCase())) {
     newItem = item
     await StudyModel.findOneAndUpdate({ user: 'admin@gmail.com' }, { $push: { items: newItem } })
   }
 
   if (!newItem) {
     await StudyModel.findOneAndUpdate(
-      { user: 'admin@gmail.com', 'items.wordPhrase': item.wordPhrase },
+      { user: 'admin@gmail.com', 'items.wordPhrase': new RegExp(item.wordPhrase, 'i') },
       {
         $set: {
           'items.$.wordPhrase': item.wordPhrase,
