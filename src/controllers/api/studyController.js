@@ -24,7 +24,7 @@ export const postItem = async (req, res) => {
         $set: {
           'items.$.wordPhrase': item.wordPhrase,
           'items.$.translation': item.translation,
-          'items.$.wordContext': item.wordContext
+          ...(item.wordContext ? { 'items.$.wordContext': item.wordContext } : {})
         }
       }
     )
