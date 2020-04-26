@@ -1,5 +1,12 @@
 import express from 'express'
-import { getLessons, getLessonById, postLesson, putLesson, deleteLesson } from '../../controllers/api/lessonController'
+import {
+  getLessons,
+  getLessonById,
+  postLesson,
+  putLesson,
+  deleteLesson
+}
+  from '../../controllers/api/lessonController'
 
 const router = express()
 
