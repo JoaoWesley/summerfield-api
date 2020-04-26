@@ -56,3 +56,42 @@ export const postLesson = async (req, res) => {
   const lessonCreated = await LessonModel.create(lesson)
   res.status(HttpStatus.CREATED).json(lessonCreated)
 }
+
+export const putLesson = async (req, res) => {
+  const lesson = {
+    _id: req.body._id,
+    title: req.body.title,
+    text: req.body.text
+  }
+  const tokenizer = new natural.RegexpTokenizer({ pattern: /([a-zÀ-ÿ-][a-zÀ-ÿ-'`]+|[0-9._]+|.|!|\?|'|"|:|;|,|-)/i })
+
+  lesson.tokens = tokenizer.tokenize(req.body.text).map((token, index) => {
+    const text = token
+    token = {}
+    token.index = index
+    token.text = text
+    if (text.match(/[a-z]+/i)) {
+      token.type = tokenType.WORD
+    } else if (text.match(/[0-9]+/)) {
+      token.type = tokenType.NUMBER
+    } else {
+      token.type = tokenType.PUNCTUATION
+    }
+    return token
+  })
+
+  await LessonModel.findOneAndUpdate(
+    { _id: lesson._id },
+    {
+      $set: lesson
+    }
+  )
+  res.status(HttpStatus.OK).end()
+}
+
+export const deleteLesson = async (req, res) => {
+  await LessonModel.deleteOne(
+    { _id: req.params.id }
+  )
+  res.status(HttpStatus.OK).end()
+}
