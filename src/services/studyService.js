@@ -2,15 +2,14 @@ import StudyModel from '../models/studyModel'
 import natural from 'natural'
 
 export const getItems = async () => {
-  const items = await StudyModel.findOne({ user: 'admin@gmail.com' })
-  return items
+  const userStudyItems = await StudyModel.findOne({ user: 'admin@gmail.com' })
+  return userStudyItems
 }
 
 export const getItem = async (wordPhrase) => {
-  let userStudyItems = await StudyModel.findOne({ user: 'admin@gmail.com' })
-
-  userStudyItems = userStudyItems.items.filter((item) => item.wordPhrase === wordPhrase.replace(/^\s|\s$/g, ''))
-  return userStudyItems
+  const userStudyItems = await StudyModel.findOne({ user: 'admin@gmail.com' })
+  const userStudyItem = userStudyItems.items.filter((item) => item.wordPhrase === wordPhrase.replace(/^\s|\s$/g, '').toLowerCase())
+  return userStudyItem.pop()
 }
 
 export const createItem = async (item) => {

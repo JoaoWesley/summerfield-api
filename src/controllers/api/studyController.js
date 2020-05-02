@@ -8,8 +8,8 @@ export const getItems = async (req, res) => {
 }
 
 export const getItem = async (req, res) => {
-  const userStudyItems = studyService.getItem(req.params.wordPhrase)
-  res.status(HttpStatus.OK).json({ item: userStudyItems.pop() })
+  const userStudyItem = await studyService.getItem(req.params.wordPhrase)
+  res.status(HttpStatus.OK).json({ item: userStudyItem })
 }
 
 export const postItem = async (req, res) => {
