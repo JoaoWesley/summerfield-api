@@ -3,12 +3,12 @@ import * as lessonService from '../../services/lessonService'
 
 export const getLessons = async (req, res) => {
   const lessons = await lessonService.getLessons()
-  res.json(lessons)
+  res.status(HttpStatus.OK).json(lessons)
 }
 
 export const getLessonById = async (req, res) => {
   const lesson = await lessonService.getLessonById(req.params.id)
-  res.json(lesson)
+  res.status(HttpStatus.OK).json(lesson)
 }
 
 export const postLesson = async (req, res) => {

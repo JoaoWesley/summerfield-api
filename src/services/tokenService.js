@@ -40,5 +40,3 @@ export const mapTokenStatus = async (tokens) => {
 
   return tokens
 }
-
-export default { tokenizeText, mapTokenStatus }

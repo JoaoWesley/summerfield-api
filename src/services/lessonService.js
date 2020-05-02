@@ -1,7 +1,7 @@
 
 import LessonModel from '../models/lessonModel'
 import { ObjectId } from 'mongodb'
-import tokenService from '../services/tokenService'
+import * as tokenService from '../services/tokenService'
 
 export const buildLessonFromRequestData = (requestData) => {
   const lesson = {}
