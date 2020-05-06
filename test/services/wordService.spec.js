@@ -85,5 +85,48 @@ describe('Word service', () => {
 
     const statusRport = await wordService.getStatusReport()
     expect(statusRport).to.be.eql(expectedStatusReport)
+    wordsModel.findOne.restore()
+  })
+
+  it('Should create words properly from request', async () => {
+    const requestWords = [
+      {
+        text: 'thanks',
+        status: 'NEW',
+        anything: 'sasas'
+      },
+
+      {
+        text: 'his',
+        status: 'NEW',
+        shahhskjhaksj: 'sasas'
+      },
+
+      {
+        text: 'watch',
+        status: 'NEW',
+        anyother: 'sasas'
+      }
+    ]
+
+    const expectedWords = [
+      {
+        text: 'thanks',
+        status: 'NEW'
+      },
+
+      {
+        text: 'his',
+        status: 'NEW'
+      },
+
+      {
+        text: 'watch',
+        status: 'NEW'
+      }
+    ]
+
+    const words = wordService.buildWordsFromRequest(requestWords)
+    expect(words).to.be.eql(expectedWords)
   })
 })

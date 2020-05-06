@@ -33,3 +33,12 @@ export const getStatusReport = async () => {
     knownWords
   }
 }
+
+export const buildWordsFromRequest = (words) => {
+  return words.map((word) => {
+    return {
+      text: word.text,
+      status: word.status
+    }
+  })
+}
