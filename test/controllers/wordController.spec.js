@@ -21,11 +21,16 @@ describe('Word controller', () => {
       sinon.stub().resolves()
     )
 
+    sinon.stub(wordService, 'buildWordsFromRequest').returns(
+      sinon.stub().resolves()
+    )
+
     await wordController.postWords(req, res)
 
     sinon.assert.calledWith(res.status, sinon.match(HttpStatus.CREATED))
     sinon.assert.calledOnce(res.status().end)
     wordService.createWords.restore()
+    wordService.buildWordsFromRequest.restore()
   })
 
   it('[put word] should return 200 and end request', async () => {

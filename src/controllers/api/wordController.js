@@ -2,7 +2,8 @@ import HttpStatus from 'http-status-codes'
 import * as wordService from '../../services/wordService'
 
 export const postWords = async (req, res) => {
-  await wordService.createWords(req.body.words)
+  const words = wordService.buildWordsFromRequest(req.body.words)
+  await wordService.createWords(words)
   res.status(HttpStatus.CREATED).end()
 }
 
