@@ -1,5 +1,6 @@
 
 import LessonModel from '../models/lessonModel'
+import LessonTopicsModel from '../models/lessonTopics'
 import { ObjectId } from 'mongodb'
 import * as tokenService from '../services/tokenService'
 
@@ -56,4 +57,29 @@ export const deleteLesson = async (id) => {
   await LessonModel.deleteOne(
     { _id: id }
   )
+}
+
+export const importLesson = async (lessonText, title) => {
+  const lesson = {
+    title,
+    text: 'Qulaquer coisa', // Posso armazenar o texto original dentro da lição
+    hasTopics: true
+  }
+  const lessonCreated = await LessonModel.create(lesson)
+  const lessonTokens = tokenService.tokenizeText(lessonText)
+  const lessonTopics = []
+  let index = 0
+
+  while (lessonTokens.length > 0) {
+    lessonTopics.push({
+      index,
+      tokens: lessonTokens.splice(0, 1000),
+      title: `Parte ${index + 1}`
+    })
+    index++
+  }
+
+  while (lessonTopics.length > 0) {
+    await LessonTopicsModel.create({ lessonId: ObjectId(lessonCreated._id), topics: lessonTopics.splice(0, 100) })
+  }
 }
