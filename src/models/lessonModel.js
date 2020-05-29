@@ -8,12 +8,13 @@ const lessonSchema = new Schema({
     required: true
   },
   tokens: {
-    type: Array,
-    required: true
+    type: Array
   },
   text: {
-    type: String,
-    required: true
+    type: String
+  },
+  hasTopics: {
+    type: Boolean
   }
 },
 {
