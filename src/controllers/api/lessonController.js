@@ -48,6 +48,7 @@ export const deleteLesson = async (req, res) => {
 export const importLesson = async (req, res) => {
   const file = await fileService.uploadFile(req, res)
   const fileTextAndTitle = await fileService.readFile(file)
+  fileService.deleteFile(file.path)
   const lessonCreated = await lessonService.importLesson(fileTextAndTitle.text, fileTextAndTitle.title || file.originalname)
   res.status(HttpStatus.CREATED).json(lessonCreated)
 }

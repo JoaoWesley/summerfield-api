@@ -1,6 +1,7 @@
 import multer from 'multer'
 import fileTypes from '../../commons/fileTypes'
 import Epub from './epub'
+import fs from 'fs'
 
 export const uploadFile = async (req, res) => {
   const storage = multer.diskStorage({
@@ -35,4 +36,8 @@ export const readFile = async (file) => {
       return epub.getText(file.path)
     }
   }
+}
+
+export const deleteFile = async (filePath) => {
+  fs.unlinkSync(filePath)
 }
