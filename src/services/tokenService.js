@@ -4,13 +4,13 @@ import WordsModel from '../models/wordsModel'
 import wordStatusType from '../commons/wordStatusType'
 
 export const tokenizeText = (text) => {
-  const tokenizer = new natural.RegexpTokenizer({ pattern: /([a-zÀ-ÿ-][a-zÀ-ÿ-'`]+|[0-9._]+|.|!|\?|'|"|:|;|,|-)/i })
+  const tokenizer = new natural.RegexpTokenizer({ pattern: /([a-zÀ-ÿ-][a-zÀ-ÿ-'`]+|[0-9._]+|[<br/><br/>]+|.|!|\?|'|"|:|;|,|-)/i })
   const tokens = tokenizer.tokenize(text).map((token, index) => {
     const text = token
     token = {}
     token.index = index
     token.text = text
-    if (text.match(/[a-z]+/i)) {
+    if (text.match(/^[a-z]+$/i)) {
       token.type = tokenType.WORD
     } else if (text.match(/[0-9]+/)) {
       token.type = tokenType.NUMBER

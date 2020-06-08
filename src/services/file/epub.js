@@ -5,6 +5,7 @@ var EPub = require('epub')
 var htmlToText = require('html-to-text')
 var path = require('path')
 var htmlParser = require('node-html-parser')
+const INVALIDSNIPPETS = [' image', '', 'image']
 
 class EPUBToText {
   /**
@@ -29,6 +30,10 @@ class EPUBToText {
           var txt = ''
           if (html) {
             txt = htmlToText.fromString(html.toString(), { ignoreHref: true })
+            if (INVALIDSNIPPETS.includes(txt)) {
+              return
+            }
+            txt = txt + ' <br/><br/> '
           };
           var meta = {}
           meta.id = chapter.id
@@ -104,14 +109,17 @@ class EPUBToText {
   }
 
   getText (filePath) {
-    let documentText = null
+    let documentText = ''
     let endchapter = 0
-    let documentTitle = null
+    let documentTitle = ''
 
     return new Promise((resolve, reject) => {
       this.extract(filePath, (err, txt, n, meta) => {
         documentText += '' + txt
         if (n === endchapter) {
+          documentText = documentText.replace(/((<br\/>[\s]*){2,}){2,}/g, '<br/><br/>')
+          documentText = documentText.replace(/(\n){2,}/g, ' <br/><br/>')
+
           resolve({ text: documentText, title: documentTitle })
         }
 

@@ -29,6 +29,6 @@ export const putItem = async (req, res) => {
 }
 
 export const trimPhrase = async (req, res) => {
-  const phrase = studyService.trimPhraseWithTokenizer(req.body.phrase)
+  const phrase = studyService.trimPhraseWithTokenizer(req.params.phrase)
   res.status(HttpStatus.OK).json({ phrase })
 }

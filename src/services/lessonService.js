@@ -82,4 +82,5 @@ export const importLesson = async (lessonText, title) => {
   while (lessonTopics.length > 0) {
     await LessonTopicsModel.create({ lessonId: ObjectId(lessonCreated._id), topics: lessonTopics.splice(0, 100) })
   }
+  return lessonCreated
 }
