@@ -14,8 +14,8 @@ export const getLessonById = async (req, res) => {
 }
 
 export const getLessonTopicsByLessonId = async (req, res) => {
-  if (req.query.topicIndex) {
-    const lesson = await lessonTopicsService.getLessonTopicsByIdAndTopic(req.params.id, req.query.topicIndex)
+  if (req.query.topicId) {
+    const lesson = await lessonTopicsService.getLessonTopicsByIdAndTopic(req.params.id, req.query.topicId)
     res.status(HttpStatus.OK).json(lesson)
     return
   }

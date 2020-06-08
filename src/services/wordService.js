@@ -13,7 +13,7 @@ export const createWords = async (words) => {
 
 export const updateWord = async (word) => {
   await WordsModel.findOneAndUpdate(
-    { user: 'admin@gmail.com', 'words.text': word.text },
+    { user: 'admin@gmail.com', 'words.text': word.text.toLowerCase() },
     {
       $set: {
         'words.$.status': word.status
@@ -36,7 +36,7 @@ export const getStatusReport = async () => {
 export const buildWordsFromRequest = (words) => {
   return words.map((word) => {
     return {
-      text: word.text,
+      text: word.text.toLowerCase(),
       status: word.status
     }
   })
