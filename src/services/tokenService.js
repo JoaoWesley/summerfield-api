@@ -4,7 +4,7 @@ import WordsModel from '../models/wordsModel'
 import wordStatusType from '../commons/wordStatusType'
 
 export const tokenizeText = (text) => {
-  const tokenizer = new natural.RegexpTokenizer({ pattern: /([a-zÀ-ÿ-][a-zÀ-ÿ-'`]+|[0-9._]+|[<br/><br/>]+|.|!|\?|'|"|:|;|,|-)/i })
+  const tokenizer = new natural.RegexpTokenizer({ pattern: /([a-zÀ-ÿ-][a-zÀ-ÿ-'`’]+|[0-9._]+|[<br/><br/>]+|.|!|\?|'|"|:|;|,|-)/i })
   const tokens = tokenizer.tokenize(text).map((token, index) => {
     const text = token
     token = {}

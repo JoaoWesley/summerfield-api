@@ -117,8 +117,8 @@ class EPUBToText {
       this.extract(filePath, (err, txt, n, meta) => {
         documentText += '' + txt
         if (n === endchapter) {
-          documentText = documentText.replace(/((<br\/>[\s]*){2,}){2,}/g, '<br/><br/>')
-          documentText = documentText.replace(/(\n){2,}/g, ' <br/><br/>')
+          documentText = documentText.replace(/((<br\/>[\s]*){2,}){2,}/g, ' <br/><br/> ')
+          documentText = documentText.replace(/(\n){2,}/g, ' <br/><br/> ')
 
           resolve({ text: documentText, title: documentTitle })
         }
