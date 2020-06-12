@@ -19,6 +19,8 @@ export const buildLessonFromRequestData = (requestData) => {
     lesson.text = requestData.text
   }
 
+  lesson.fragment = requestData.text.substr(0, 27)
+
   return lesson
 }
 
@@ -62,8 +64,8 @@ export const deleteLesson = async (id) => {
 export const importLesson = async (lessonText, title) => {
   const lesson = {
     title,
-    text: 'Qulaquer coisa', // Posso armazenar o texto original dentro da lição
-    hasTopics: true
+    hasTopics: true,
+    fragment: lessonText.substr(0, 27).replace(/<br\/><br\/>/g, '\n\n')
   }
   const lessonCreated = await LessonModel.create(lesson)
   const lessonTokens = tokenService.tokenizeText(lessonText)
@@ -76,6 +78,7 @@ export const importLesson = async (lessonText, title) => {
       tokens: lessonTokens.splice(0, 1000),
       title: `Parte ${index + 1}`
     })
+    lessonTopics[index].text = tokenService.createTextFromTokens(lessonTopics[index].tokens)
     index++
   }
 

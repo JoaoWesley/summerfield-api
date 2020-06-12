@@ -15,6 +15,10 @@ const lessonSchema = new Schema({
   },
   hasTopics: {
     type: Boolean
+  },
+  fragment: {
+    type: String,
+    required: true
   }
 },
 {
