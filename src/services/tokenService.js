@@ -43,13 +43,13 @@ export const mapTokenStatus = async (tokens) => {
 }
 
 export const createTextFromTokens = (tokens) => {
-  return tokens.map(token => {
+  return tokens.map((token, index) => {
     let { text } = token
     if (text === '<br/><br/>') {
       text = '\n\n'
     }
-    if (!text.match(/[.,!?;:“”]/)) {
-      return ' ' + text
+    if ((tokens[index + 1] && !tokens[index + 1].text.match(/[.,!?;:“”]/) && !text.match(/[“]/)) || text === '.') {
+      return text + ' '
     }
     return text
   }).join('')
