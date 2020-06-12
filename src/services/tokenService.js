@@ -4,6 +4,7 @@ import WordsModel from '../models/wordsModel'
 import wordStatusType from '../commons/wordStatusType'
 
 export const tokenizeText = (text) => {
+  text = text.replace(/(\n){2,}/g, ' <br/><br/> ')
   const tokenizer = new natural.RegexpTokenizer({ pattern: /([a-zÀ-ÿ-][a-zÀ-ÿ-'`’]+|[0-9._]+|[<br/><br/>]+|.|!|\?|'|"|:|;|,|-)/i })
   const tokens = tokenizer.tokenize(text).map((token, index) => {
     const text = token
@@ -39,4 +40,17 @@ export const mapTokenStatus = async (tokens) => {
   })
 
   return tokens
+}
+
+export const createTextFromTokens = (tokens) => {
+  return tokens.map(token => {
+    let { text } = token
+    if (text === '<br/><br/>') {
+      text = '\n\n'
+    }
+    if (!text.match(/[.,!?;:“”]/)) {
+      return ' ' + text
+    }
+    return text
+  }).join('')
 }

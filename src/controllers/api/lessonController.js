@@ -40,8 +40,19 @@ export const putLesson = async (req, res) => {
   res.status(HttpStatus.OK).end()
 }
 
+export const putLessonTopic = async (req, res) => {
+  await lessonTopicsService.updateLessonTopic(req.params.id, req.body)
+
+  res.status(HttpStatus.OK).end()
+}
+
 export const deleteLesson = async (req, res) => {
   await lessonService.deleteLesson(req.params.id)
+  res.status(HttpStatus.OK).end()
+}
+
+export const deleteLessonTopic = async (req, res) => {
+  await lessonTopicsService.deleteLessonTopic(req.params.id, req.query.topicId)
   res.status(HttpStatus.OK).end()
 }
 

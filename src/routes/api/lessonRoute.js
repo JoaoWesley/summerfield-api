@@ -5,8 +5,10 @@ import {
   getLessonTopicsByLessonId,
   postLesson,
   putLesson,
+  putLessonTopic,
   deleteLesson,
-  importLesson
+  importLesson,
+  deleteLessonTopic
 }
   from '../../controllers/api/lessonController'
 
@@ -18,6 +20,8 @@ router.get('/:id/lesson-topics', getLessonTopicsByLessonId)
 router.post('/', postLesson)
 router.post('/import-lesson', importLesson)
 router.put('/', putLesson)
+router.put('/:id/lesson-topics', putLessonTopic)
 router.delete('/:id', deleteLesson)
+router.delete('/:id/lesson-topics', deleteLessonTopic)
 
 export default router
