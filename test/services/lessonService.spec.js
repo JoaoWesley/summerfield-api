@@ -72,7 +72,8 @@ describe('Lesson service', () => {
     const expectedObject = {
       _id: '5ea3c3580675cc60fc8a275e',
       title: 'Natural language',
-      text: 'natural language refers to a language that we, humans use'
+      text: 'natural language refers to a language that we, humans use',
+      fragment: 'natural language refers to '
     }
 
     const response = lessonService.buildLessonFromRequestData(requestData)
