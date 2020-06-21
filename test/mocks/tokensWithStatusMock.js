@@ -64,6 +64,18 @@ const wordsWithStatusMock = [
     text: 'use',
     type: 'WORD',
     status: 'NEW'
+  },
+  {
+    index: 11,
+    text: '123',
+    type: 'NUMBER',
+    status: 'NEW'
+  },
+  {
+    index: 12,
+    text: '<br/><br/>',
+    type: 'PUNCTUATION',
+    status: 'NEW'
   }
 ]
 export default wordsWithStatusMock

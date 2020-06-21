@@ -18,8 +18,13 @@ describe('Token service', () => {
       exec: sinon.stub().resolves({ words: wordsMock })
     })
 
-    const tokens = await tokenService.mapTokenStatus(JSON.parse(JSON.stringify(lessonsMock[0].tokens)))
+    const tokens = await tokenService.mapTokenStatus([...lessonsMock[0].tokens])
     expect(tokens).to.eql(tokensWithStatusMock)
     wordsModel.findOne.restore()
+  })
+
+  it('Should create text from tokens', async () => {
+    const text = await tokenService.createTextFromTokens(lessonsMock[0].tokens)
+    expect(text).to.eql(lessonsMock[0].text)
   })
 })
