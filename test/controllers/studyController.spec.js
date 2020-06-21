@@ -110,7 +110,7 @@ describe('Study controller', () => {
 
   it('[trim phrase] should return 200 and json object ', async () => {
     const req = {
-      body: {
+      params: {
         phrase: ''
       }
     }
