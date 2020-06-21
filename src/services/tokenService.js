@@ -11,7 +11,7 @@ export const tokenizeText = (text) => {
     token = {}
     token.index = index
     token.text = text
-    if (text.match(/^[a-z]+$/i)) {
+    if (text.match(/^[a-zÀ-ÿ-][a-zÀ-ÿ-'`’]+$/i)) {
       token.type = tokenType.WORD
     } else if (text.match(/[0-9]+/)) {
       token.type = tokenType.NUMBER
