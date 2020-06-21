@@ -4,8 +4,10 @@ import { expect } from 'chai'
 import * as lessonService from '../../src/services/lessonService'
 import * as tokenService from '../../src/services/tokenService'
 import LessonModel from '../../src/models/lessonModel'
+import LessonTopicsModel from '../../src/models/lessonTopics'
 import * as sinon from 'sinon'
 import lessonsMock from '../mocks/lessonsMock'
+import lessonTopicsMock from '../mocks/lessonTopicsMock'
 
 describe('Lesson service', () => {
   it('Should get lessons', async () => {
@@ -78,5 +80,20 @@ describe('Lesson service', () => {
 
     const response = lessonService.buildLessonFromRequestData(requestData)
     expect(response).to.eql(expectedObject)
+  })
+
+  it('Should import lesson ', async () => {
+    const mongoLessonStub = sinon.stub(LessonModel, 'create').returns(lessonsMock[0])
+    const mongoLessonTopicsStub = sinon.stub(LessonTopicsModel, 'create').returns()
+    sinon.stub(tokenService, 'tokenizeText').returns([...lessonTopicsMock[0].tokens])
+    sinon.stub(tokenService, 'createTextFromTokens').returns('any exmaple test')
+
+    await lessonService.importLesson('5ea3c3580675cc60fc8a275e', 'The title')
+    expect(mongoLessonStub.calledOnce).to.be.true
+    expect(mongoLessonTopicsStub.calledOnce).to.be.true
+    LessonModel.create.restore()
+    LessonTopicsModel.create.restore()
+    tokenService.tokenizeText.restore()
+    tokenService.createTextFromTokens.restore()
   })
 })
