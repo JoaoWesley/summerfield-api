@@ -1,5 +1,7 @@
 import StudyModel from '../models/studyModel'
 import natural from 'natural'
+import regexType from './../commons/regexType'
+const SPACE_START_END = /^\s|\s$/g
 
 export const getItems = async () => {
   const userStudyItems = await StudyModel.findOne({ user: 'admin@gmail.com' })
@@ -8,7 +10,7 @@ export const getItems = async () => {
 
 export const getItem = async (wordPhrase) => {
   const userStudyItems = await StudyModel.findOne({ user: 'admin@gmail.com' })
-  const userStudyItem = userStudyItems.items.filter((item) => item.wordPhrase === wordPhrase.replace(/^\s|\s$/g, '').toLowerCase())
+  const userStudyItem = userStudyItems.items.filter((item) => item.wordPhrase === wordPhrase.replace(SPACE_START_END, '').toLowerCase())
   return userStudyItem.pop()
 }
 
@@ -33,7 +35,7 @@ export const buildItemFromRequetData = (requestData) => {
   const item = {}
 
   if (requestData.wordPhrase) {
-    item.wordPhrase = requestData.wordPhrase.replace(/^\s|\s$/g, '')
+    item.wordPhrase = requestData.wordPhrase.replace(SPACE_START_END, '')
   }
 
   if (requestData.translation) {
@@ -48,9 +50,9 @@ export const buildItemFromRequetData = (requestData) => {
 }
 
 export const trimPhraseWithTokenizer = (phrase) => {
-  const Regexptokenizer = new natural.RegexpTokenizer({ pattern: /([a-zÀ-ÿ-][a-zÀ-ÿ-'`]+|[0-9._]+|.|!|\?|'|"|:|;|,|-)/i })
+  const Regexptokenizer = new natural.RegexpTokenizer({ pattern: regexType.STANDARD_REGEX_TOKENIZER })
   const arrayOfTokens = Regexptokenizer.tokenize(phrase)
   phrase = arrayOfTokens.join('')
-  phrase = phrase.replace(/^\s|\s$/g, '')
+  phrase = phrase.replace(SPACE_START_END, '')
   return phrase
 }

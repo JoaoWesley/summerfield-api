@@ -3,6 +3,8 @@ import LessonModel from '../models/lessonModel'
 import LessonTopicsModel from '../models/lessonTopics'
 import { ObjectId } from 'mongodb'
 import * as tokenService from '../services/tokenService'
+import tokenSpacerType from '../commons/tokenSpacerType'
+import regexType from '../commons/regexType'
 
 export const buildLessonFromRequestData = (requestData) => {
   const lesson = {}
@@ -65,7 +67,7 @@ export const importLesson = async (lessonText, title) => {
   const lesson = {
     title,
     hasTopics: true,
-    fragment: lessonText.substr(0, 27).replace(/<br\/><br\/>/g, '\n\n')
+    fragment: lessonText.substr(0, 27).replace(regexType.DOUBLE_LINE_BREAK_TAG, tokenSpacerType.DOUBLE_LINE_BREAK)
   }
   const lessonCreated = await LessonModel.create(lesson)
   const lessonTokens = tokenService.tokenizeText(lessonText)
