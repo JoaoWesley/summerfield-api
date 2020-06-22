@@ -4,7 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "nyc --reporter=html --reporter=text mocha --require sucrase/register ./test/**/*.js",
+    "test": "nyc --reporter=html mocha --require sucrase/register ./test/**/*.js",
+    "test:coverage": "nyc --reporter=html --reporter=text mocha --require sucrase/register ./test/**/*.js",
     "dev": "nodemon src/server.js",
     "build": "sucrase ./src -d ./dist --transforms imports",
     "start": "node dist/server.js",

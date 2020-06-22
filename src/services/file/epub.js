@@ -1,5 +1,7 @@
 'use strict'
 
+import regexType from './../../commons/regexType'
+import tokenSpacerType from './../../commons/tokenSpacerType'
 var fs = require('fs')
 var EPub = require('epub')
 var htmlToText = require('html-to-text')
@@ -33,7 +35,7 @@ class EPUBToText {
             if (INVALIDSNIPPETS.includes(txt)) {
               return
             }
-            txt = txt + ' <br/><br/> '
+            txt = txt + tokenSpacerType.DOUBLE_LINE_BREAK_TAG
           };
           var meta = {}
           meta.id = chapter.id
@@ -117,8 +119,8 @@ class EPUBToText {
       this.extract(filePath, (err, txt, n, meta) => {
         documentText += '' + txt
         if (n === endchapter) {
-          documentText = documentText.replace(/((<br\/>[\s]*){2,}){2,}/g, ' <br/><br/> ')
-          documentText = documentText.replace(/(\n){2,}/g, ' <br/><br/> ')
+          documentText = documentText.replace(regexType.UNIFIED_LINE_BREAK_TAG, tokenSpacerType.DOUBLE_LINE_BREAK_TAG)
+          documentText = documentText.replace(regexType.UNIFIED_LINE_BREAK, tokenSpacerType.DOUBLE_LINE_BREAK_TAG)
 
           resolve({ text: documentText, title: documentTitle })
         }
