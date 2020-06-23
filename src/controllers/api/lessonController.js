@@ -57,9 +57,16 @@ export const deleteLessonTopic = async (req, res) => {
 }
 
 export const importLesson = async (req, res) => {
-  const file = await fileService.uploadFile(req, res)
-  const fileTextAndTitle = await fileService.readFile(file)
-  fileService.deleteFile(file.path)
-  const lessonCreated = await lessonService.importLesson(fileTextAndTitle.text, fileTextAndTitle.title || file.originalname)
-  res.status(HttpStatus.CREATED).json(lessonCreated)
+  try {
+    const file = await fileService.uploadFile(req, res)
+    const fileTextAndTitle = await fileService.readFile(file)
+    fileService.deleteFile(file.path)
+    const lessonCreated = await lessonService.importLesson(fileTextAndTitle.text, fileTextAndTitle.title || file.originalname)
+    res.status(HttpStatus.CREATED).json(lessonCreated)
+  } catch (error) {
+    if (error.code) {
+      res.status(HttpStatus.UNPROCESSABLE_ENTITY).json({ message: error.message, code: error.code })
+    }
+    res.status(HttpStatus.BAD_REQUEST).json({ message: error.message, code: error.code })
+  }
 }

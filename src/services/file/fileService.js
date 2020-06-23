@@ -2,6 +2,7 @@ import multer from 'multer'
 import fileTypes from '../../commons/fileTypes'
 import Epub from './epub'
 import fs from 'fs'
+import InvalidFileTypeExcpetion from './../../exception/invalidFileTypeException'
 
 export const uploadFile = async (req, res) => {
   const storage = multer.diskStorage({
@@ -13,7 +14,7 @@ export const uploadFile = async (req, res) => {
     }
   })
 
-  const upload = multer({ storage: storage }).single('file')
+  const upload = multer({ storage: storage, limits: { fileSize: 4000000 } }).single('file')
 
   //    await upload.call(req, res)
 
@@ -35,6 +36,8 @@ export const readFile = async (file) => {
       const epub = new Epub()
       return epub.getText(file.path)
     }
+    default:
+      throw new InvalidFileTypeExcpetion()
   }
 }
 
