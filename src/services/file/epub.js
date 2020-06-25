@@ -8,6 +8,7 @@ var htmlToText = require('html-to-text')
 var path = require('path')
 var htmlParser = require('node-html-parser')
 const INVALIDSNIPPETS = [' image', '', 'image']
+const imagePattern = /^\[\/images\/id.*]$/
 
 class EPUBToText {
   /**
@@ -32,7 +33,7 @@ class EPUBToText {
           var txt = ''
           if (html) {
             txt = htmlToText.fromString(html.toString(), { ignoreHref: true })
-            if (INVALIDSNIPPETS.includes(txt)) {
+            if (INVALIDSNIPPETS.includes(txt) || txt.match(imagePattern)) {
               return
             }
             txt = txt + tokenSpacerType.DOUBLE_LINE_BREAK_TAG
