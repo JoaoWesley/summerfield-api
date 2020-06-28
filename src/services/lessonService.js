@@ -72,7 +72,7 @@ export const importLesson = async (lessonText, title) => {
   const lesson = {
     title,
     hasTopics: true,
-    fragment: lessonText.substr(0, 27).replace(regexType.DOUBLE_LINE_BREAK_TAG, tokenSpacerType.DOUBLE_LINE_BREAK)
+    fragment: lessonText.replace(regexType.DOUBLE_LINE_BREAK_TAG, tokenSpacerType.DOUBLE_LINE_BREAK).substr(0, 27)
   }
   const lessonCreated = await LessonModel.create(lesson)
   const lessonTokens = tokenService.tokenizeText(lessonText)
