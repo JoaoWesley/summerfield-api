@@ -4,7 +4,7 @@ import * as studyService from '../../services/studyService'
 export const getItems = async (req, res) => {
   const items = await studyService.getItems()
 
-  res.status(HttpStatus.OK).json(items)
+  res.status(HttpStatus.OK).json(items)  
 }
 
 export const getItem = async (req, res) => {
@@ -28,7 +28,17 @@ export const putItem = async (req, res) => {
   res.status(HttpStatus.OK).end()
 }
 
-export const trimPhrase = async (req, res) => {
+export const trimPhrase = (req, res) => {
   const phrase = studyService.trimPhraseWithTokenizer(req.params.phrase)
   res.status(HttpStatus.OK).json({ phrase })
+}
+
+export const review = async (req, res) => {  
+  const items = await studyService.getItemsToReview(req.query.lessonId)
+  res.status(HttpStatus.OK).json(items)  
+}
+
+export const evaluate = async (req, res) => {
+ const evaluation = await studyService.evaluate(req.body)  
+ res.status(HttpStatus.OK).json(evaluation)
 }
