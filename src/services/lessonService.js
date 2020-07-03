@@ -30,6 +30,7 @@ export const getLessons = async () => {
   const lessons = await LessonModel.find({}, {
     _id: 1,
     title: 1,
+    text: 1,
     hasTopics: 1,
     fragment: 1
   }).exec()
