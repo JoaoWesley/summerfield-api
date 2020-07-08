@@ -22,7 +22,7 @@ export const updateWord = async (word) => {
   )
 }
 
-export const getStatusReport = async () => {
+export const getStatusReport = async () => { 
   const userWords = (await WordsModel.findOne({ user: 'admin@gmail.com' }).exec()).words
   const learningWords = userWords.filter((word) => word.status === wordStatusType.LEARNING)
   const knownWords = userWords.filter((word) => word.status === wordStatusType.KNOWN)

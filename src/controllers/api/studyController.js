@@ -44,8 +44,10 @@ export const evaluate = async (req, res) => {
  res.status(HttpStatus.OK).json(evaluation)
 }
 
-export const getPopularTranslation = async (req, res) => {
-  const translation = await popularTranslationService.getPopularTranslation(req.params.wordPhrase)
+export const getPopularTranslation = async (req, res) => {  
+  const translation = await popularTranslationService.getPopularTranslation(
+    popularTranslationService.buildTranslationFromQueryString(req.query)
+  )
   res.status(HttpStatus.OK).json(translation)
 }
 

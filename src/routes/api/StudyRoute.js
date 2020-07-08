@@ -20,7 +20,7 @@ router.put('/item', putItem)
 router.get('/trim-phrase/:phrase', trimPhrase)
 router.get('/review/', review)
 router.post('/evaluate/', evaluate)
-router.get('/popular-translation/:wordPhrase', getPopularTranslation)
+router.get('/popular-translation/', getPopularTranslation)
 router.post('/popular-translation/', postPopularTranslation)
 
 export default router

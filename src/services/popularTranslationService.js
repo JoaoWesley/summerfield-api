@@ -1,36 +1,47 @@
-import PopularTranslationModel from '../models/PopularTranslationModel'
+import PopularTranslationModel from '../models/popularTranslationModel'
 
 
-export const getPopularTranslation = (wordPhrase) => {
-    const translations = await PopularTranslationModel.findOne(
-        { 
-            user: 'admin@gmail.com', 
-            wordPhrase
-        },       
-    )
+export const getPopularTranslation = async (translation) => {
+    const translations = await PopularTranslationModel.find(
+        {
+            wordPhrase: translation.wordPhrase.toLowerCase()
+        }
+    )    
+        
+    if(!translations) {
+        return null
+    }
     
-    let found = null
+    let foundTranslation = null
 
     //Por equanto retornar somente a primeira encontrada
-    found =  translations.find( (t) => t.context.sectionId === translationcontext.sectionId)
-    if(found) {
-        return found
+    foundTranslation =  translations.filter( (t) =>
+        t.context.sectionId === +translation.context.sectionId && 
+        t.context.topicId === +translation.context.topicId &&
+        t.context.lessonId === translation.context.lessonId
+    )
+    if(foundTranslation.length > 0) {
+        return returnTranslationWithOcurrences(foundTranslation)
     }
 
-    found = translations.find( (t) => t.context.topicId === translationcontext.topicId)
-    if(found) {
-        return found
+    foundTranslation = translations.filter( (t) => 
+        t.context.topicId === +translation.context.topicId && 
+        t.context.lessonId === translation.context.lessonId
+    )
+    if(foundTranslation.length > 0) {
+        return returnTranslationWithOcurrences(foundTranslation)
     }
 
-    found = translations.find( (t) => t.context.lessonId === translationcontext.lessonId)
-    if(found) {
-        return found
+    foundTranslation = translations.filter( (t) => t.context.lessonId === translation.context.lessonId)
+    if(foundTranslation.length > 0) {
+        return returnTranslationWithOcurrences(foundTranslation)
     }
 
-    return getMoreFrequentTranslation(translations)
+    foundTranslation = getMostOcurredTranslation(translations)    
+    return returnTranslationWithOcurrences(foundTranslation)
 }
 
-export const getMoreFrequentTranslation = (translations) => {
+export const getMostOcurredTranslation = (translations) => {
     const transFormedTranslations = translations.map( (translation) => translation.translation.toLowerCase())
     
     /**
@@ -53,20 +64,28 @@ export const getMoreFrequentTranslation = (translations) => {
             maxCount = modeMap[el];
         }
     }
-
+        
     // Returns most frequent translation
-    return translations.find( (t) => t.translation.toLowerCase() === maxEl)
+    return translations.filter( (t) => t.translation.toLowerCase() === maxEl)
 }
 
-export const createTranslation = (popularTranslation) => {
-    popularTranslation = {
-        wordPhrase: 'her',
-        translation: 'Exemplo de tradução',
-        context: {
-            lessonId: '5ef55f36ccd6c47e8259b160',
-            topicId: 10,
-            sectionId: 6
-        }
-    }
+export const createTranslation = (popularTranslation) => {   
+    popularTranslation.wordPhrase = popularTranslation.wordPhrase.toLowerCase()
+    popularTranslation.translation = popularTranslation.translation.toLowerCase()
     return PopularTranslationModel.create(popularTranslation)
+}
+
+export const buildTranslationFromQueryString = (query) => {
+    const { wordPhrase, lessonId, topicId, sectionId } = query
+    return { wordPhrase, context: { lessonId, topicId, sectionId } }
+}
+
+export const returnTranslationWithOcurrences = (foundTranslations) => {
+    if(!foundTranslations) {
+        return null
+    }
+    return {
+        occurrences: foundTranslations.length,
+        translation: foundTranslations[0].translation
+    }
 }
