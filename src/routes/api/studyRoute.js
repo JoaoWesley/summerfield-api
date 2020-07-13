@@ -1,15 +1,15 @@
 import express from 'express'
-import { 
-    postItem, 
-    getItems, 
-    getItem, 
-    trimPhrase, 
-    putItem, 
-    review, 
-    evaluate, 
-    getPopularTranslation ,
-    postPopularTranslation
-} from '../../controllers/api//studyController'
+import {
+  postItem,
+  getItems,
+  getItem,
+  trimPhrase,
+  putItem,
+  review,
+  evaluate,
+  getPopularTranslation,
+  postPopularTranslation
+} from '../../controllers/api/studyController'
 
 const router = express()
 
