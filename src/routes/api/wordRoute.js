@@ -1,5 +1,9 @@
 import express from 'express'
-import { postWords, statusReport, putWord } from '../../controllers/api/wordController'
+import {
+  postWords,
+  statusReport,
+  putWord
+} from '../../controllers/api/wordController'
 
 const router = express()
 
