@@ -1,9 +1,9 @@
 import natural from 'natural'
-import tokenType from '../commons/tokenType'
+import tokenType from '../commons/types/tokenType'
 import WordsModel from '../models/wordsModel'
-import wordStatusType from '../commons/wordStatusType'
-import regexType from '../commons/regexType'
-import tokenSpacerType from '../commons/tokenSpacerType'
+import wordStatusType from '../commons/types/wordStatusType'
+import regexType from '../commons/types/regexType'
+import tokenSpacerType from '../commons/types/tokenSpacerType'
 
 export const tokenizeText = text => {
   text = text.replace(

@@ -11,11 +11,11 @@ export const transporter = nodemailer.createTransport({
 })
 
 export const getPasswordResetURL = (user, token) => {
-  return `${variables.CLIENT_BASE_URL}/password/reset-password/?userId=${user._id}&token=${token}`
+  return `${variables.CLIENT_BASE_URL}/?userId=${user._id}&token=${token}`
 }
 
 export const getConfirmationEmailURL = (user, token) => {
-  return `${variables.CLIENT_BASE_URL}/password/reset-password/?userId=${user._id}&token=${token}`
+  return `${variables.CLIENT_BASE_URL}/?userId=${user._id}&token=${token}`
 }
 
 export const resetPasswordTemplate = (user, url) => {

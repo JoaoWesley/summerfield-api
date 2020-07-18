@@ -1,5 +1,5 @@
 import WordsModel from '../models/wordsModel'
-import wordStatusType from '../commons/wordStatusType'
+import wordStatusType from '../commons/types/wordStatusType'
 
 export const createWords = async words => {
   const userWords = (

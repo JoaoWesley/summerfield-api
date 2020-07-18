@@ -1,6 +1,6 @@
 import StudyModel from '../models/studyModel'
 import natural from 'natural'
-import regexType from './../commons/regexType'
+import regexType from './../commons/types/regexType'
 import moment from 'moment'
 import supermemo2 from 'supermemo2'
 

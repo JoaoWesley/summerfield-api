@@ -2,8 +2,8 @@ import LessonModel from '../models/lessonModel'
 import LessonTopicsModel from '../models/lessonTopics'
 import { ObjectId } from 'mongodb'
 import * as tokenService from '../services/tokenService'
-import tokenSpacerType from '../commons/tokenSpacerType'
-import regexType from '../commons/regexType'
+import tokenSpacerType from '../commons/types/tokenSpacerType'
+import regexType from '../commons/types/regexType'
 
 export const buildLessonFromRequestData = requestData => {
   const lesson = {}
