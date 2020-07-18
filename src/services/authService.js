@@ -3,11 +3,12 @@ import variables from './../config/envVariablesConfig'
 import User from './../models/userModel'
 import bcrypt from 'bcryptjs'
 import * as userService from '../services/userService'
+import constants from '../commons/constants'
 
-export const registerUser = async (email, password) => {
-  let user = new User({ email, password })
+export const registerUser = async (email, password, name) => {
+  let user = new User({ email, password, name })
   const token = jwt.sign({ id: user._id }, variables.JWT_SECRET, {
-    expiresIn: 86400 // 24 hours
+    expiresIn: constants.TOKEN_EXPIRATION_TIME
   })
   const payload = { user, token }
 
@@ -16,24 +17,17 @@ export const registerUser = async (email, password) => {
   return payload
 }
 
-export const returnUserIfExistsAndUpdate = async email => {
-  const oldUser = await User.findOneAndUpdate(
-    { email },
-    // Update lastLogin, increment loginCount:
-    { lastLogin: Date.now(), $inc: { loginCount: 1 } },
-    // Return user before doing update
-    { new: false }
-  ).exec()
-
-  return oldUser
-}
-
 export const loginUserAndReturnPayloadWithToken = async (user, password) => {
   const isMatch = await user.comparePassword(password)
 
   if (isMatch) {
     const token = jwt.sign({ id: user._id }, variables.JWT_SECRET, {
-      expiresIn: 86400 // 24 hours
+      expiresIn: constants.TOKEN_EXPIRATION_TIME
+    })
+
+    userService.updateUser(user._id, {
+      lastLogin: Date.now(),
+      $inc: { loginCount: 1 }
     })
 
     const payload = { user: user, token }

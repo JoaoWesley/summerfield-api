@@ -5,9 +5,14 @@ import wordStatusType from '../commons/wordStatusType'
 import regexType from '../commons/regexType'
 import tokenSpacerType from '../commons/tokenSpacerType'
 
-export const tokenizeText = (text) => {
-  text = text.replace(regexType.DOUBLE_LINE_BREAK, tokenSpacerType.DOUBLE_LINE_BREAK_TAG)
-  const tokenizer = new natural.RegexpTokenizer({ pattern: regexType.STANDARD_REGEX_TOKENIZER })
+export const tokenizeText = text => {
+  text = text.replace(
+    regexType.DOUBLE_LINE_BREAK,
+    tokenSpacerType.DOUBLE_LINE_BREAK_TAG
+  )
+  const tokenizer = new natural.RegexpTokenizer({
+    pattern: regexType.STANDARD_REGEX_TOKENIZER
+  })
   const tokens = tokenizer.tokenize(text).map((token, index) => {
     const text = token
     token = {}
@@ -26,12 +31,16 @@ export const tokenizeText = (text) => {
   return tokens
 }
 
-export const mapTokenStatus = async (tokens) => {
-  const userWords = (await WordsModel.findOne({ user: 'admin@gmail.com' }).exec()).words
+export const mapTokenStatus = async tokens => {
+  const userWords = (
+    await WordsModel.findOne({ user: 'admin@gmail.com' }).exec()
+  ).words
 
-  tokens.map((token) => {
+  tokens.map(token => {
     if (token.text.match(/[a-z]+/i)) {
-      const wordDealtAlready = userWords.find((element) => element.text.toLowerCase() === token.text.toLowerCase())
+      const wordDealtAlready = userWords.find(
+        element => element.text.toLowerCase() === token.text.toLowerCase()
+      )
       if (wordDealtAlready) {
         token.status = wordDealtAlready.status
         return token
@@ -44,15 +53,22 @@ export const mapTokenStatus = async (tokens) => {
   return tokens
 }
 
-export const createTextFromTokens = (tokens) => {
-  return tokens.map((token, index) => {
-    let { text } = token
-    if (text.match(regexType.DOUBLE_LINE_BREAK_TAG)) {
-      text = tokenSpacerType.DOUBLE_LINE_BREAK
-    }
-    if ((tokens[index + 1] && !tokens[index + 1].text.match(regexType.PUNCTUATION) && !text.match(/[“]/)) || text === '.') {
-      return text + ' '
-    }
-    return text
-  }).join('')
+export const createTextFromTokens = tokens => {
+  return tokens
+    .map((token, index) => {
+      let { text } = token
+      if (text.match(regexType.DOUBLE_LINE_BREAK_TAG)) {
+        text = tokenSpacerType.DOUBLE_LINE_BREAK
+      }
+      if (
+        (tokens[index + 1] &&
+          !tokens[index + 1].text.match(regexType.PUNCTUATION) &&
+          !text.match(/[“]/)) ||
+        text === '.'
+      ) {
+        return text + ' '
+      }
+      return text
+    })
+    .join('')
 }

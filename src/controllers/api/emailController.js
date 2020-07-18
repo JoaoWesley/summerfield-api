@@ -41,7 +41,7 @@ export const sendConfirmationEmail = async (req, res) => {
       console.log(`** Email sent **`, info.response)
       res.end()
     })
-    .cacth(error => {
+    .catch(error => {
       res
         .status(HttpStatus.INTERNAL_SERVER_ERROR)
         .json({ message: 'Error sending email' })

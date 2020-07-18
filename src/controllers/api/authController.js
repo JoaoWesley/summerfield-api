@@ -1,18 +1,31 @@
 import * as authService from './../../services/authService'
 import * as userService from './../../services/userService'
 import HttpStatus from 'http-status-codes'
+import respondeCodeTypes from '../../commons/respondeCodeTypes'
+import emailValidator from 'email-validator'
+import constants from '../../commons/constants'
 
 export const register = async (req, res) => {
-  const { email, password } = req.body
+  const { email, password, name } = req.body
+  if (!emailValidator.validate(email)) {
+    return res.status(HttpStatus.BAD_REQUEST).json({
+      message: 'E-mail invalid'
+    })
+  }
+
   try {
     const existingUser = await userService.getUserByEmail(email)
     if (existingUser) {
-      return res
-        .status(HttpStatus.BAD_REQUEST)
-        .json({ message: 'Email already exists' })
+      return res.status(HttpStatus.BAD_REQUEST).json({
+        message: 'Email already exists',
+        code: respondeCodeTypes.EMAIL_ALREADY_EXISTS
+      })
     }
 
-    const payload = await authService.registerUser(email, password)
+    const payload = await authService.registerUser(email, password, name)
+    res.cookie('token', payload.token, {
+      maxAge: constants.TOKEN_EXPIRATION_TIME
+    })
     res.status(HttpStatus.CREATED).json(payload)
   } catch (error) {
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
@@ -26,14 +39,7 @@ export const login = async (req, res) => {
   const { email, password } = req.body
 
   try {
-    // TO DO -> Return user first then update login  number
-    const user = await authService.returnUserIfExistsAndUpdate(email)
-
-    if (!user.emailConfirmed) {
-      return res
-        .status(HttpStatus.UNAUTHORIZED)
-        .json({ message: 'E-mail not confirmed' })
-    }
+    const user = await userService.getUserByEmail(email)
 
     if (!user) {
       return res
@@ -46,6 +52,9 @@ export const login = async (req, res) => {
       password
     )
     if (userLoggedInPayload) {
+      res.cookie('token', userLoggedInPayload.token, {
+        maxAge: constants.TOKEN_EXPIRATION_TIME
+      })
       return res.status(HttpStatus.OK).json(userLoggedInPayload)
     }
 

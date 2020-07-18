@@ -9,14 +9,16 @@ import userRoute from './routes/api//userRoute'
 import authRoute from './routes/api/authRoute'
 import emailRoute from './routes/api/emailRoute'
 import cors from 'cors'
-import auth from './middlewares/auth'
+import auth from './middlewares/authMiddleware'
+import cookieParser from 'cookie-parser'
 
 mongoConnection.connect()
 
 const app = express()
 
-app.use(cors())
+app.use(cors({ credentials: true, origin: variables.CLIENT_BASE_URL }))
 app.use(bodyParser.json())
+app.use(cookieParser())
 
 app.use('/lesson', auth, lessonRoute)
 app.use('/word', auth, wordRoute)

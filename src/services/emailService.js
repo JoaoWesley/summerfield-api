@@ -10,12 +10,12 @@ export const transporter = nodemailer.createTransport({
   }
 })
 
-export const getPasswordResetURL = () => {
-  return `${variables.CLIENT_BASE_URL}/password/reset-password/`
+export const getPasswordResetURL = (user, token) => {
+  return `${variables.CLIENT_BASE_URL}/password/reset-password/?userId=${user._id}&token=${token}`
 }
 
-export const getConfirmationEmailURL = () => {
-  return `${variables.CLIENT_BASE_URL}/password/reset-password/`
+export const getConfirmationEmailURL = (user, token) => {
+  return `${variables.CLIENT_BASE_URL}/password/reset-password/?userId=${user._id}&token=${token}`
 }
 
 export const resetPasswordTemplate = (user, url) => {
@@ -27,7 +27,7 @@ export const resetPasswordTemplate = (user, url) => {
   <p>Vimos que você esqueceu sua senha de acesso. Sentimos muito por isso!</p>
   <p>Mas não se preocupe! Você pode utilizar o link a seguir para criar uma nova senha:</p>
   <a href=${url}>${url}</a>
-  <p>Se você não utilizar esse link dentro de 1 hora ele vai se expirar.</p>  
+  <p>Se você não utilizar esse link dentro de 24 horas ele vai se expirar.</p>  
   <p>–English everywhere</p>
   `
   // const html = `
@@ -51,7 +51,7 @@ export const confirmationTemplate = (user, url) => {
   <p>Olá ${user.name || user.email},</p>
   <p>Para prosseguir com seu cadastro precisamos confirmar o seu e-mail, para isso clique no link a seguir</p>  
   <a href=${url}>${url}</a>
-  <p>Se você não utilizar esse link dentro de 1 dia ele vai se expirar.</p>    
+  <p>Se você não utilizar esse link dentro de 24 horas ele vai se expirar.</p>    
   <p>–English everywhere</p>
   `
   // const html = `
@@ -76,7 +76,7 @@ export const usePasswordHashToMakeToken = ({
 }) => {
   const secret = passwordHash + '-' + createdAt
   const token = jwt.sign({ userId }, secret, {
-    expiresIn: '1d' // 1 hour
+    expiresIn: '1d' // 1 Day
   })
   return token
 }
@@ -110,9 +110,3 @@ export const sendConfirmationEmail = user => {
     })
   })
 }
-transporter.sendMail(emailTemplate, (err, info) => {
-  if (err) {
-    reject(err)
-  }
-  resolve(info)
-})
