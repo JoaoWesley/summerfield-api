@@ -1,7 +1,7 @@
 import * as authService from './../../services/authService'
 import * as userService from './../../services/userService'
 import HttpStatus from 'http-status-codes'
-import respondeCodeTypes from '../../commons/respondeCodeTypes'
+import responseCodeTypes from '../../commons/types/responseCodeTypes'
 import emailValidator from 'email-validator'
 import constants from '../../commons/constants'
 
@@ -18,7 +18,7 @@ export const register = async (req, res) => {
     if (existingUser) {
       return res.status(HttpStatus.BAD_REQUEST).json({
         message: 'Email already exists',
-        code: respondeCodeTypes.EMAIL_ALREADY_EXISTS
+        code: responseCodeTypes.EMAIL_ALREADY_EXISTS
       })
     }
 

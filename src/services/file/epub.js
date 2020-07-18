@@ -1,7 +1,7 @@
 'use strict'
 
-import regexType from './../../commons/regexType'
-import tokenSpacerType from './../../commons/tokenSpacerType'
+import regexType from './../../commons/types/regexType'
+import tokenSpacerType from './../../commons/types/tokenSpacerType'
 var fs = require('fs')
 var EPub = require('epub')
 var htmlToText = require('html-to-text')

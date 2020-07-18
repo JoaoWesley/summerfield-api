@@ -1,5 +1,5 @@
 import multer from 'multer'
-import fileTypes from '../../commons/fileTypes'
+import fileTypes from '../../commons/types/fileTypes'
 import Epub from './epub'
 import pdfToText from 'pdf-to-text'
 import fs from 'fs'
