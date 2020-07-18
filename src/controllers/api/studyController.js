@@ -5,7 +5,7 @@ import * as popularTranslationService from '../..//services/popularTranslationSe
 export const getItems = async (req, res) => {
   const items = await studyService.getItems()
 
-  res.status(HttpStatus.OK).json(items)  
+  res.status(HttpStatus.OK).json(items)
 }
 
 export const getItem = async (req, res) => {
@@ -34,17 +34,17 @@ export const trimPhrase = (req, res) => {
   res.status(HttpStatus.OK).json({ phrase })
 }
 
-export const review = async (req, res) => {  
+export const review = async (req, res) => {
   const items = await studyService.getItemsToReview(req.query.lessonId)
-  res.status(HttpStatus.OK).json(items)  
+  res.status(HttpStatus.OK).json(items)
 }
 
 export const evaluate = async (req, res) => {
- const evaluation = await studyService.evaluate(req.body)  
- res.status(HttpStatus.OK).json(evaluation)
+  const evaluation = await studyService.evaluate(req.body)
+  res.status(HttpStatus.OK).json(evaluation)
 }
 
-export const getPopularTranslation = async (req, res) => {  
+export const getPopularTranslation = async (req, res) => {
   const translation = await popularTranslationService.getPopularTranslation(
     popularTranslationService.buildTranslationFromQueryString(req.query)
   )
@@ -52,6 +52,8 @@ export const getPopularTranslation = async (req, res) => {
 }
 
 export const postPopularTranslation = async (req, res) => {
-  const translation = await popularTranslationService.createTranslation(req.body)
+  const translation = await popularTranslationService.createTranslation(
+    req.body
+  )
   res.status(HttpStatus.CREATED).json(translation)
 }

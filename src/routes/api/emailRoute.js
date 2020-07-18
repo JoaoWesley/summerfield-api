@@ -6,7 +6,7 @@ import {
 
 const router = express()
 
-router.post('/send-password-reset-email/', sendPasswordResetEmail)
+router.post('/send-reset-password-email/', sendPasswordResetEmail)
 router.post('/send-confirmation-email/', sendConfirmationEmail)
 
 export default router

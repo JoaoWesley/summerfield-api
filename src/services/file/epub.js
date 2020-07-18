@@ -34,12 +34,15 @@ class EPUBToText {
           var txt = ''
           if (html) {
             txt = htmlToText.fromString(html.toString(), { ignoreHref: true })
-            if (INVALIDSNIPPETS.includes(txt) || txt.match(imageChapterPattern)) {
+            if (
+              INVALIDSNIPPETS.includes(txt) ||
+              txt.match(imageChapterPattern)
+            ) {
               return
             }
             txt = txt.replace(imagePattern, '')
             txt = txt + tokenSpacerType.DOUBLE_LINE_BREAK_TAG
-          };
+          }
           var meta = {}
           meta.id = chapter.id
           meta.excerpt = txt.trim().slice(0, 250)
@@ -59,7 +62,7 @@ class EPUBToText {
     epub.on('end', function () {
       if (initialCallback) {
         initialCallback(null, epub.flow.length, epub.metadata.title)
-      };
+      }
     })
 
     epub.parse()
@@ -78,22 +81,27 @@ class EPUBToText {
     var totalCount
     var processedCount = 0
 
-    this.extract(sourceFile, (err, txt, sequence) => {
-      if (err) {
-        console.log('erro extracting #1')
+    this.extract(
+      sourceFile,
+      (err, txt, sequence) => {
+        if (err) {
+          console.log('erro extracting #1')
+        }
+        var destFile =
+          destFolder + '/' + sequence + '-' + path.basename(sourceFile) + '.txt'
+        fs.writeFileSync(destFile, txt)
+        processedCount += 1
+        if (processedCount >= totalCount) {
+          callback(null)
+        }
+      },
+      (err, numberOfChapters) => {
+        if (err) {
+          console.log('erro getting number of chaptesr')
+        }
+        totalCount = numberOfChapters
       }
-      var destFile = destFolder + '/' + sequence + '-' + path.basename(sourceFile) + '.txt'
-      fs.writeFileSync(destFile, txt)
-      processedCount += 1
-      if (processedCount >= totalCount) {
-        callback(null)
-      }
-    }, (err, numberOfChapters) => {
-      if (err) {
-        console.log('erro getting number of chaptesr')
-      }
-      totalCount = numberOfChapters
-    })
+    )
   }
 
   /**
@@ -108,8 +116,8 @@ class EPUBToText {
       title = root.querySelector('title')
       if (title == null) {
         return ''
-      };
-    };
+      }
+    }
     return title.structuredText.replace('\n', ' ')
   }
 
@@ -119,26 +127,36 @@ class EPUBToText {
     let documentTitle = ''
 
     return new Promise((resolve, reject) => {
-      this.extract(filePath, (err, txt, n, meta) => {
-        documentText += '' + txt
-        if (n === endchapter) {
-          documentText = documentText.replace(regexType.UNIFIED_LINE_BREAK_TAG, tokenSpacerType.DOUBLE_LINE_BREAK_TAG)
-          documentText = documentText.replace(regexType.UNIFIED_LINE_BREAK, tokenSpacerType.DOUBLE_LINE_BREAK_TAG)
+      this.extract(
+        filePath,
+        (err, txt, n, meta) => {
+          documentText += '' + txt
+          if (n === endchapter) {
+            documentText = documentText.replace(
+              regexType.UNIFIED_LINE_BREAK_TAG,
+              tokenSpacerType.DOUBLE_LINE_BREAK_TAG
+            )
+            documentText = documentText.replace(
+              regexType.UNIFIED_LINE_BREAK,
+              tokenSpacerType.DOUBLE_LINE_BREAK_TAG
+            )
 
-          resolve({ text: documentText, title: documentTitle })
-        }
+            resolve({ text: documentText, title: documentTitle })
+          }
 
-        if (err) {
-          console.log('error extracting #2')
-          reject(err)
+          if (err) {
+            console.log('error extracting #2')
+            reject(err)
+          }
+        },
+        (err, n, title) => {
+          if (err) {
+            console.log('error getting book metada')
+          }
+          documentTitle = title
+          endchapter = n - 1
         }
-      }, (err, n, title) => {
-        if (err) {
-          console.log('error getting book metada')
-        }
-        documentTitle = title
-        endchapter = n - 1
-      })
+      )
     })
   }
 }

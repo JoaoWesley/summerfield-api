@@ -30,13 +30,10 @@ const UserSchema = new Schema(
       default: 0,
       type: Number
     },
-    token: {
-      type: String,
-      required: false
-    },
     emailConfirmed: {
       type: Boolean,
-      required: true
+      required: true,
+      default: false
     }
   },
   {

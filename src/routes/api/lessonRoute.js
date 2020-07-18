@@ -9,8 +9,7 @@ import {
   deleteLesson,
   importLesson,
   deleteLessonTopic
-}
-  from '../../controllers/api/lessonController'
+} from '../../controllers/api/lessonController'
 
 const router = express()
 

@@ -16,7 +16,10 @@ export const uploadFile = async (req, res) => {
     }
   })
 
-  const upload = multer({ storage: storage, limits: { fileSize: 4000000 } }).single('file')
+  const upload = multer({
+    storage: storage,
+    limits: { fileSize: 4000000 }
+  }).single('file')
 
   return new Promise((resolve, reject) => {
     upload(req, res, function (err) {
@@ -30,7 +33,7 @@ export const uploadFile = async (req, res) => {
   })
 }
 
-export const readFile = async (file) => {
+export const readFile = async file => {
   switch (file.mimetype) {
     case fileTypes.EPUB: {
       const epub = new Epub()
@@ -39,14 +42,14 @@ export const readFile = async (file) => {
     case fileTypes.PDF: {
       return new Promise((resolve, reject) => {
         pdfToText.pdfToText(file.path, function (err, data) {
-          if (err) reject(err)          
+          if (err) reject(err)
           resolve({ text: data })
         })
-      })    
+      })
     }
     case fileTypes.DOCX: {
-      const result = await mammoth.extractRawText({ path: file.path })  
-      var text = result.value; // The raw text
+      const result = await mammoth.extractRawText({ path: file.path })
+      var text = result.value // The raw text
       return { text }
     }
     default:
@@ -54,6 +57,6 @@ export const readFile = async (file) => {
   }
 }
 
-export const deleteFile = async (filePath) => {
+export const deleteFile = async filePath => {
   fs.unlinkSync(filePath)
 }
