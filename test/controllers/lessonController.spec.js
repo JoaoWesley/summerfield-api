@@ -15,9 +15,9 @@ describe('Lesson controller', () => {
       status: sinon.stub().returns({ json: sinon.spy() })
     }
 
-    sinon.stub(lessonService, 'getLessons').returns(
-      sinon.stub().resolves(lessonsMock)
-    )
+    sinon
+      .stub(lessonService, 'getLessons')
+      .returns(sinon.stub().resolves(lessonsMock))
 
     await lessonsController.getLessons(null, res)
 
@@ -33,12 +33,13 @@ describe('Lesson controller', () => {
       }
     }
     const res = {
-      status: sinon.stub().returns({ json: sinon.spy() })
+      status: sinon.stub().returns({ json: sinon.spy() }),
+      userOnRequest: { id: '' }
     }
 
-    sinon.stub(lessonService, 'getLessonById').returns(
-      sinon.stub().resolves(lessonsMock[0])
-    )
+    sinon
+      .stub(lessonService, 'getLessonById')
+      .returns(sinon.stub().resolves(lessonsMock[0]))
 
     await lessonsController.getLessonById(req, res)
 
@@ -49,8 +50,7 @@ describe('Lesson controller', () => {
 
   it('[post lesson] should return 201 and json object', async () => {
     const req = {
-      body: {
-      }
+      body: {}
     }
 
     const lessonRequestObject = {
@@ -63,13 +63,13 @@ describe('Lesson controller', () => {
       status: sinon.stub().returns({ json: sinon.spy() })
     }
 
-    sinon.stub(lessonService, 'createLesson').returns(
-      sinon.stub().resolves(lessonsMock[0])
-    )
+    sinon
+      .stub(lessonService, 'createLesson')
+      .returns(sinon.stub().resolves(lessonsMock[0]))
 
-    sinon.stub(lessonService, 'buildLessonFromRequestData').returns(
-      sinon.stub().resolves(lessonRequestObject)
-    )
+    sinon
+      .stub(lessonService, 'buildLessonFromRequestData')
+      .returns(sinon.stub().resolves(lessonRequestObject))
 
     await lessonsController.postLesson(req, res)
 
@@ -81,8 +81,7 @@ describe('Lesson controller', () => {
 
   it('[update lesson] should return 200 and end request', async () => {
     const req = {
-      body: {
-      }
+      body: {}
     }
 
     const lessonRequestObject = {
@@ -95,13 +94,13 @@ describe('Lesson controller', () => {
       status: sinon.stub().returns({ end: sinon.spy() })
     }
 
-    sinon.stub(lessonService, 'updateLesson').returns(
-      sinon.stub().resolves(lessonsMock[0])
-    )
+    sinon
+      .stub(lessonService, 'updateLesson')
+      .returns(sinon.stub().resolves(lessonsMock[0]))
 
-    sinon.stub(lessonService, 'buildLessonFromRequestData').returns(
-      sinon.stub().resolves(lessonRequestObject)
-    )
+    sinon
+      .stub(lessonService, 'buildLessonFromRequestData')
+      .returns(sinon.stub().resolves(lessonRequestObject))
 
     await lessonsController.putLesson(req, res)
 
@@ -122,9 +121,9 @@ describe('Lesson controller', () => {
       status: sinon.stub().returns({ end: sinon.spy() })
     }
 
-    sinon.stub(lessonService, 'deleteLesson').returns(
-      sinon.stub().resolves(lessonsMock[0])
-    )
+    sinon
+      .stub(lessonService, 'deleteLesson')
+      .returns(sinon.stub().resolves(lessonsMock[0]))
 
     await lessonsController.deleteLesson(req, res)
 
@@ -149,10 +148,10 @@ describe('Lesson controller', () => {
 
     /**
      * Testing with topicId
-    */
-    sinon.stub(lessonTopicsService, 'getLessonTopicsByIdAndTopic').returns(
-      sinon.stub().resolves({})
-    )
+     */
+    sinon
+      .stub(lessonTopicsService, 'getLessonTopicsByIdAndTopic')
+      .returns(sinon.stub().resolves({}))
     await lessonsController.getLessonTopicsByLessonId(req, res)
     sinon.assert.calledWith(res.status, sinon.match(HttpStatus.OK))
     sinon.assert.calledOnce(res.status().json)
@@ -160,11 +159,11 @@ describe('Lesson controller', () => {
 
     /**
      * Testing without topicId
-    */
+     */
     req.query.topicId = null
-    sinon.stub(lessonTopicsService, 'getLessonTopicsByLessonId').returns(
-      sinon.stub().resolves({})
-    )
+    sinon
+      .stub(lessonTopicsService, 'getLessonTopicsByLessonId')
+      .returns(sinon.stub().resolves({}))
     await lessonsController.getLessonTopicsByLessonId(req, res)
     sinon.assert.calledWith(res.status, sinon.match(HttpStatus.OK))
     sinon.assert.calledTwice(res.status().json)
@@ -176,18 +175,16 @@ describe('Lesson controller', () => {
       params: {
         id: ''
       },
-      body: {
-
-      }
+      body: {}
     }
 
     const res = {
       status: sinon.stub().returns({ end: sinon.spy() })
     }
 
-    sinon.stub(lessonTopicsService, 'updateLessonTopic').returns(
-      sinon.stub().resolves()
-    )
+    sinon
+      .stub(lessonTopicsService, 'updateLessonTopic')
+      .returns(sinon.stub().resolves())
 
     await lessonsController.putLessonTopic(req, res)
 
@@ -210,9 +207,9 @@ describe('Lesson controller', () => {
       status: sinon.stub().returns({ end: sinon.spy() })
     }
 
-    sinon.stub(lessonTopicsService, 'deleteLessonTopic').returns(
-      sinon.stub().resolves()
-    )
+    sinon
+      .stub(lessonTopicsService, 'deleteLessonTopic')
+      .returns(sinon.stub().resolves())
 
     await lessonsController.deleteLessonTopic(req, res)
 
@@ -222,28 +219,33 @@ describe('Lesson controller', () => {
   })
 
   it('[import lesson] should return 201 and json object', async () => {
-    const req = {
-    }
+    const req = {}
 
     const res = {
       status: sinon.stub().returns({ json: sinon.spy() })
     }
 
-    sinon.stub(fileService, 'uploadFile').returns(
-      sinon.stub().resolves({ path: '/filename.epub', originalname: 'original name' })
-    )
+    sinon
+      .stub(fileService, 'uploadFile')
+      .returns(
+        sinon
+          .stub()
+          .resolves({ path: '/filename.epub', originalname: 'original name' })
+      )
 
-    sinon.stub(fileService, 'readFile').returns(
-      sinon.stub().resolves({ text: 'some file text', title: 'some file title' })
-    )
+    sinon
+      .stub(fileService, 'readFile')
+      .returns(
+        sinon
+          .stub()
+          .resolves({ text: 'some file text', title: 'some file title' })
+      )
 
-    sinon.stub(fileService, 'deleteFile').returns(
-      sinon.stub().resolves()
-    )
+    sinon.stub(fileService, 'deleteFile').returns(sinon.stub().resolves())
 
-    sinon.stub(lessonService, 'importLesson').returns(
-      sinon.stub().resolves(lessonsWithTopicsMock[0])
-    )
+    sinon
+      .stub(lessonService, 'importLesson')
+      .returns(sinon.stub().resolves(lessonsWithTopicsMock[0]))
 
     await lessonsController.importLesson(req, res)
 

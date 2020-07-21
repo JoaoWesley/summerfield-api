@@ -1,15 +1,17 @@
 import * as emailService from '../../services/emailService'
 import * as userService from '../../services/userService'
 import HttpStatus from 'http-status-codes'
+import reponseCondeTypes from '../../commons/types/responseCodeTypes'
 
 export const sendPasswordResetEmail = async (req, res) => {
   const { email } = req.body
 
   let user = await userService.getUserByEmail(email)
   if (!user) {
-    return res
-      .status(HttpStatus.NOT_FOUND)
-      .json({ message: 'No user with that email' })
+    return res.status(HttpStatus.NOT_FOUND).json({
+      message: 'No user with that email',
+      code: reponseCondeTypes.EMAIL_NOT_FOUND
+    })
   }
 
   emailService

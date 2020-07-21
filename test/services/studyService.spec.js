@@ -5,6 +5,7 @@ import * as studyService from '../../src/services/studyService'
 import studyModel from '../../src/models/studyModel'
 import * as sinon from 'sinon'
 import studyItemsMock from '../mocks/studyItemsMock'
+import moment from 'moment'
 
 describe('Study service', () => {
   it('Should get study items', async () => {
@@ -17,14 +18,18 @@ describe('Study service', () => {
   it('Should get study item by word or phrase', async () => {
     sinon.stub(studyModel, 'findOne').returns(studyItemsMock)
 
-    const studyItem = await studyService.getItem(studyItemsMock.items[0].wordPhrase)
+    const studyItem = await studyService.getItem(
+      studyItemsMock.items[0].wordPhrase
+    )
     expect(studyItem).to.eql(studyItemsMock.items[0])
 
     studyModel.findOne.restore()
   })
 
   it('Should create study item ', async () => {
-    const mongoStub = sinon.stub(studyModel, 'findOneAndUpdate').returns({ ...studyItemsMock.items[0] })
+    const mongoStub = sinon
+      .stub(studyModel, 'findOneAndUpdate')
+      .returns({ ...studyItemsMock.items[0] })
     await studyService.createItem({ ...studyItemsMock.items[0] })
 
     expect(mongoStub.calledOnce).to.be.true
@@ -47,6 +52,7 @@ describe('Study service', () => {
     }
 
     const expctedObject = {
+      nextReviewDate: moment('2020-01-01 01:01').format('YYYY-MM-DD HH:mm'),
       wordPhrase: 'language',
       translation: 'Linguagem 132123',
       wordContext: 'palavras ao redor da palavra'

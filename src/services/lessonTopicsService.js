@@ -16,7 +16,11 @@ export const getLessonTopicsByLessonId = async lessonId => {
   return topics
 }
 
-export const getLessonTopicsByIdAndTopic = async (lessonId, topicIndex) => {
+export const getLessonTopicsByIdAndTopic = async (
+  lessonId,
+  topicIndex,
+  userId
+) => {
   const response = await LessonTopicsModel.aggregate([
     { $match: { lessonId: ObjectId(lessonId) } },
     { $unwind: '$topics' },
@@ -25,7 +29,8 @@ export const getLessonTopicsByIdAndTopic = async (lessonId, topicIndex) => {
 
   const lessonTopics = response.pop()
   lessonTopics.topics.tokens = await tokenService.mapTokenStatus(
-    lessonTopics.topics.tokens
+    lessonTopics.topics.tokens,
+    userId
   )
   return lessonTopics
 }

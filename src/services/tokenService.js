@@ -31,10 +31,8 @@ export const tokenizeText = text => {
   return tokens
 }
 
-export const mapTokenStatus = async tokens => {
-  const userWords = (
-    await WordsModel.findOne({ user: 'admin@gmail.com' }).exec()
-  ).words
+export const mapTokenStatus = async (tokens, userId) => {
+  let userWords = (await WordsModel.findOne({ userId }).exec()).words
 
   tokens.map(token => {
     if (token.text.match(/[a-z]+/i)) {

@@ -9,12 +9,13 @@ import * as studyService from '../../src/services/studyService'
 describe('Study controller', () => {
   it('[get items] should return 200 and json object', async () => {
     const res = {
-      status: sinon.stub().returns({ json: sinon.spy() })
+      status: sinon.stub().returns({ json: sinon.spy() }),
+      userOnRequest: { id: '' }
     }
 
-    sinon.stub(studyService, 'getItems').returns(
-      sinon.stub().resolves(studyItemsMock)
-    )
+    sinon
+      .stub(studyService, 'getItems')
+      .returns(sinon.stub().resolves(studyItemsMock))
 
     await studyController.getItems(null, res)
 
@@ -26,16 +27,18 @@ describe('Study controller', () => {
   it('[get study item by id] should return 200  and json object', async () => {
     const req = {
       params: {
-        wordPhrase: 'thanks'
+        wordPhrase: 'thanks',
+        userOnRequest: { id: '' }
       }
     }
     const res = {
-      status: sinon.stub().returns({ json: sinon.spy() })
+      status: sinon.stub().returns({ json: sinon.spy() }),
+      userOnRequest: { id: '' }
     }
 
-    sinon.stub(studyService, 'getItem').returns(
-      sinon.stub().resolves(studyItemsMock[0])
-    )
+    sinon
+      .stub(studyService, 'getItem')
+      .returns(sinon.stub().resolves(studyItemsMock[0]))
 
     await studyController.getItem(req, res)
 
@@ -46,8 +49,7 @@ describe('Study controller', () => {
 
   it('[post study item] should return 201 and json object', async () => {
     const req = {
-      body: {
-      }
+      body: {}
     }
 
     const studyItemRequestObject = {
@@ -57,16 +59,17 @@ describe('Study controller', () => {
     }
 
     const res = {
-      status: sinon.stub().returns({ end: sinon.spy() })
+      status: sinon.stub().returns({ end: sinon.spy() }),
+      userOnRequest: { id: '' }
     }
 
-    sinon.stub(studyService, 'createItem').returns(
-      sinon.stub().resolves(studyItemsMock[0])
-    )
+    sinon
+      .stub(studyService, 'createItem')
+      .returns(sinon.stub().resolves(studyItemsMock[0]))
 
-    sinon.stub(studyService, 'buildItemFromRequetData').returns(
-      sinon.stub().resolves(studyItemRequestObject)
-    )
+    sinon
+      .stub(studyService, 'buildItemFromRequetData')
+      .returns(sinon.stub().resolves(studyItemRequestObject))
 
     await studyController.postItem(req, res)
 
@@ -78,8 +81,7 @@ describe('Study controller', () => {
 
   it('[update item] should return 200 and end request', async () => {
     const req = {
-      body: {
-      }
+      body: {}
     }
 
     const studyItemRequestObject = {
@@ -89,16 +91,17 @@ describe('Study controller', () => {
     }
 
     const res = {
-      status: sinon.stub().returns({ end: sinon.spy() })
+      status: sinon.stub().returns({ end: sinon.spy() }),
+      userOnRequest: { id: '' }
     }
 
-    sinon.stub(studyService, 'updateItem').returns(
-      sinon.stub().resolves(studyItemsMock[0])
-    )
+    sinon
+      .stub(studyService, 'updateItem')
+      .returns(sinon.stub().resolves(studyItemsMock[0]))
 
-    sinon.stub(studyService, 'buildItemFromRequetData').returns(
-      sinon.stub().resolves(studyItemRequestObject)
-    )
+    sinon
+      .stub(studyService, 'buildItemFromRequetData')
+      .returns(sinon.stub().resolves(studyItemRequestObject))
 
     await studyController.putItem(req, res)
 
@@ -119,9 +122,9 @@ describe('Study controller', () => {
       status: sinon.stub().returns({ json: sinon.spy() })
     }
 
-    sinon.stub(studyService, 'trimPhraseWithTokenizer').returns(
-      sinon.stub().resolves({})
-    )
+    sinon
+      .stub(studyService, 'trimPhraseWithTokenizer')
+      .returns(sinon.stub().resolves({}))
 
     await studyController.trimPhrase(req, res)
 

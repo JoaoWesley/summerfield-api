@@ -3,20 +3,23 @@ import * as studyService from '../../services/studyService'
 import * as popularTranslationService from '../..//services/popularTranslationService'
 
 export const getItems = async (req, res) => {
-  const items = await studyService.getItems()
+  const items = await studyService.getItems(res.userOnRequest.id)
 
   res.status(HttpStatus.OK).json(items)
 }
 
 export const getItem = async (req, res) => {
-  const userStudyItem = await studyService.getItem(req.params.wordPhrase)
+  const userStudyItem = await studyService.getItem(
+    req.params.wordPhrase,
+    res.userOnRequest.id
+  )
   res.status(HttpStatus.OK).json({ item: userStudyItem })
 }
 
 export const postItem = async (req, res) => {
   const item = studyService.buildItemFromRequetData(req.body)
 
-  await studyService.createItem(item)
+  await studyService.createItem(item, res.userOnRequest.id)
 
   res.status(HttpStatus.CREATED).end()
 }
@@ -24,7 +27,7 @@ export const postItem = async (req, res) => {
 export const putItem = async (req, res) => {
   const item = studyService.buildItemFromRequetData(req.body)
 
-  await studyService.updateItem(item)
+  await studyService.updateItem(item, res.userOnRequest.id)
 
   res.status(HttpStatus.OK).end()
 }

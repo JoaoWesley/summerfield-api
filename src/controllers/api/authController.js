@@ -29,7 +29,7 @@ export const register = async (req, res) => {
     res.status(HttpStatus.CREATED).json(payload)
   } catch (error) {
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
-      status: 'registration failed',
+      status: 'Registration failed',
       message: error.message
     })
   }

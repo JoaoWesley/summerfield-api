@@ -39,10 +39,10 @@ export const getLessons = async () => {
   return lessons
 }
 
-export const getLessonById = async lessonId => {
+export const getLessonById = async (lessonId, userId) => {
   const lesson = await LessonModel.findById(ObjectId(lessonId)).exec()
 
-  lesson.tokens = await tokenService.mapTokenStatus(lesson.tokens)
+  lesson.tokens = await tokenService.mapTokenStatus(lesson.tokens, userId)
 
   return lesson
 }

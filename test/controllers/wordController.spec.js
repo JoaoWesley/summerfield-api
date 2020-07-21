@@ -14,16 +14,15 @@ describe('Word controller', () => {
       }
     }
     const res = {
-      status: sinon.stub().returns({ end: sinon.spy() })
+      status: sinon.stub().returns({ end: sinon.spy() }),
+      userOnRequest: { id: '' }
     }
 
-    sinon.stub(wordService, 'createWords').returns(
-      sinon.stub().resolves()
-    )
+    sinon.stub(wordService, 'createWords').returns(sinon.stub().resolves())
 
-    sinon.stub(wordService, 'buildWordsFromRequest').returns(
-      sinon.stub().resolves()
-    )
+    sinon
+      .stub(wordService, 'buildWordsFromRequest')
+      .returns(sinon.stub().resolves())
 
     await wordController.postWords(req, res)
 
@@ -40,12 +39,11 @@ describe('Word controller', () => {
       }
     }
     const res = {
-      status: sinon.stub().returns({ end: sinon.spy() })
+      status: sinon.stub().returns({ end: sinon.spy() }),
+      userOnRequest: { id: '' }
     }
 
-    sinon.stub(wordService, 'updateWord').returns(
-      sinon.stub().resolves()
-    )
+    sinon.stub(wordService, 'updateWord').returns(sinon.stub().resolves())
 
     await wordController.putWord(req, res)
 
@@ -56,12 +54,11 @@ describe('Word controller', () => {
 
   it('[statusReport] should return 200 and json object', async () => {
     const res = {
-      status: sinon.stub().returns({ json: sinon.spy() })
+      status: sinon.stub().returns({ json: sinon.spy() }),
+      userOnRequest: { id: '' }
     }
 
-    sinon.stub(wordService, 'getStatusReport').returns(
-      statusReportMock
-    )
+    sinon.stub(wordService, 'getStatusReport').returns(statusReportMock)
 
     await wordController.statusReport(null, res)
 
