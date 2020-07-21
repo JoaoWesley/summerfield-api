@@ -29,7 +29,6 @@ export const updateWord = async (word, userId) => {
 
 export const getStatusReport = async userId => {
   let userWords = (await WordsModel.findOne({ userId }).exec()).words
-  userWords = userWords.words
   const learningWords = userWords.filter(
     word => word.status === wordStatusType.LEARNING
   )

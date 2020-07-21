@@ -4,6 +4,7 @@ import HttpStatus from 'http-status-codes'
 import responseCodeTypes from '../../commons/types/responseCodeTypes'
 import emailValidator from 'email-validator'
 import constants from '../../commons/constants'
+import responseCodeTypes from '../../commons/types/responseCodeTypes'
 
 export const register = async (req, res) => {
   const { email, password, name } = req.body
@@ -42,9 +43,10 @@ export const login = async (req, res) => {
     const user = await userService.getUserByEmail(email)
 
     if (!user) {
-      return res
-        .status(HttpStatus.NOT_FOUND)
-        .json({ message: 'User does not exist' })
+      return res.status(HttpStatus.NOT_FOUND).json({
+        message: 'User does not exist',
+        code: responseCodeTypes.EMAIL_NOT_FOUND
+      })
     }
 
     const userLoggedInPayload = await authService.loginUserAndReturnPayloadWithToken(
