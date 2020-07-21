@@ -4,6 +4,8 @@ import User from './../models/userModel'
 import bcrypt from 'bcryptjs'
 import * as userService from '../services/userService'
 import constants from '../commons/constants'
+import studyModel from './../models/studyModel'
+import wordsModel from './../models/wordsModel'
 
 export const registerUser = async (email, password, name) => {
   let user = new User({ email, password, name })
@@ -13,6 +15,8 @@ export const registerUser = async (email, password, name) => {
   const payload = { user, token }
 
   await user.save()
+  studyModel.create({ userId: user._id, words: [] })
+  wordsModel.create({ userId: user._id, items: [] })
 
   return payload
 }
