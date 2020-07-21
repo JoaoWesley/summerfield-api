@@ -28,7 +28,7 @@ describe('Word service', () => {
         status: 'NEW'
       }
     ]
-    await wordService.createWords(wordsPost)
+    await wordService.createWords(wordsPost, '')
     expect(mongoStub.calledOnce).to.be.true
     wordsModel.findOne.restore()
     wordsModel.findOneAndUpdate.restore()
@@ -83,7 +83,7 @@ describe('Word service', () => {
       ]
     }
 
-    const statusRport = await wordService.getStatusReport()
+    const statusRport = await wordService.getStatusReport('')
     expect(statusRport).to.be.eql(expectedStatusReport)
     wordsModel.findOne.restore()
   })

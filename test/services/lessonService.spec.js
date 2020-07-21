@@ -24,10 +24,12 @@ describe('Lesson service', () => {
       exec: sinon.stub().resolves(lessonsMock[0])
     })
 
-    sinon.stub(tokenService, 'mapTokenStatus')
-      .returns(lessonsMock[0].tokens)
+    sinon.stub(tokenService, 'mapTokenStatus').returns(lessonsMock[0].tokens)
 
-    const lesson = await lessonService.getLessonById('5ea3c3580675cc60fc8a275e')
+    const lesson = await lessonService.getLessonById(
+      '5ea3c3580675cc60fc8a275e',
+      ''
+    )
     expect(lesson).to.eql(lessonsMock[0])
 
     tokenService.mapTokenStatus.restore()
@@ -36,8 +38,7 @@ describe('Lesson service', () => {
 
   it('Should create lesson ', async () => {
     sinon.stub(LessonModel, 'create').returns(lessonsMock[0])
-    sinon.stub(tokenService, 'tokenizeText')
-      .returns(lessonsMock[0].tokens)
+    sinon.stub(tokenService, 'tokenizeText').returns(lessonsMock[0].tokens)
 
     const lesson = await lessonService.createLesson(lessonsMock[0])
     expect(lesson).to.eql(lessonsMock[0])
@@ -47,8 +48,7 @@ describe('Lesson service', () => {
 
   it('Should update lesson ', async () => {
     const mongoStub = sinon.stub(LessonModel, 'findOneAndUpdate').returns()
-    sinon.stub(tokenService, 'tokenizeText')
-      .returns(lessonsMock[0].tokens)
+    sinon.stub(tokenService, 'tokenizeText').returns(lessonsMock[0].tokens)
 
     await lessonService.updateLesson(lessonsMock[0])
     expect(mongoStub.calledOnce).to.be.true
@@ -83,9 +83,15 @@ describe('Lesson service', () => {
   })
 
   it('Should import lesson ', async () => {
-    const mongoLessonStub = sinon.stub(LessonModel, 'create').returns(lessonsMock[0])
-    const mongoLessonTopicsStub = sinon.stub(LessonTopicsModel, 'create').returns()
-    sinon.stub(tokenService, 'tokenizeText').returns([...lessonTopicsMock[0].tokens])
+    const mongoLessonStub = sinon
+      .stub(LessonModel, 'create')
+      .returns(lessonsMock[0])
+    const mongoLessonTopicsStub = sinon
+      .stub(LessonTopicsModel, 'create')
+      .returns()
+    sinon
+      .stub(tokenService, 'tokenizeText')
+      .returns([...lessonTopicsMock[0].tokens])
     sinon.stub(tokenService, 'createTextFromTokens').returns('any exmaple test')
 
     await lessonService.importLesson('5ea3c3580675cc60fc8a275e', 'The title')

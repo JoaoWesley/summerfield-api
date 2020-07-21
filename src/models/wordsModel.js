@@ -6,7 +6,7 @@ const Schema = mongoose.Schema
 
 const WordsSchema = new Schema(
   {
-    user: {
+    userId: {
       type: String,
       required: true
     },

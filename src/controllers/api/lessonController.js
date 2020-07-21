@@ -9,7 +9,10 @@ export const getLessons = async (req, res) => {
 }
 
 export const getLessonById = async (req, res) => {
-  const lesson = await lessonService.getLessonById(req.params.id)
+  const lesson = await lessonService.getLessonById(
+    req.params.id,
+    res.userOnRequest.id
+  )
   res.status(HttpStatus.OK).json(lesson)
 }
 

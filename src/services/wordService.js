@@ -1,10 +1,8 @@
 import WordsModel from '../models/wordsModel'
 import wordStatusType from '../commons/types/wordStatusType'
 
-export const createWords = async words => {
-  const userWords = (
-    await WordsModel.findOne({ user: 'admin@gmail.com' }).exec()
-  ).words
+export const createWords = async (words, userId) => {
+  let userWords = (await WordsModel.findOne({ userId }).exec()).words
 
   const newWords = words.filter(word => {
     return !userWords.find(
@@ -13,14 +11,14 @@ export const createWords = async words => {
   })
 
   await WordsModel.findOneAndUpdate(
-    { user: 'admin@gmail.com' },
+    { userId },
     { $push: { words: { $each: newWords } } }
   )
 }
 
-export const updateWord = async word => {
+export const updateWord = async (word, userId) => {
   await WordsModel.findOneAndUpdate(
-    { user: 'admin@gmail.com', 'words.text': word.text.toLowerCase() },
+    { userId, 'words.text': word.text.toLowerCase() },
     {
       $set: {
         'words.$.status': word.status
@@ -29,10 +27,9 @@ export const updateWord = async word => {
   )
 }
 
-export const getStatusReport = async () => {
-  const userWords = (
-    await WordsModel.findOne({ user: 'admin@gmail.com' }).exec()
-  ).words
+export const getStatusReport = async userId => {
+  let userWords = (await WordsModel.findOne({ userId }).exec()).words
+  userWords = userWords.words
   const learningWords = userWords.filter(
     word => word.status === wordStatusType.LEARNING
   )

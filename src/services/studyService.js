@@ -6,13 +6,13 @@ import supermemo2 from 'supermemo2'
 
 const SPACE_START_END = /^\s|\s$/g
 
-export const getItems = async () => {
-  const userStudyItems = await StudyModel.findOne({ user: 'admin@gmail.com' })
+export const getItems = async userId => {
+  const userStudyItems = await StudyModel.findOne({ userId })
   return userStudyItems
 }
 
-export const getItem = async wordPhrase => {
-  const userStudyItems = await StudyModel.findOne({ user: 'admin@gmail.com' })
+export const getItem = async (wordPhrase, userId) => {
+  const userStudyItems = await StudyModel.findOne({ userId })
   const userStudyItem = userStudyItems.items.filter(
     item =>
       item.wordPhrase === wordPhrase.replace(SPACE_START_END, '').toLowerCase()
@@ -20,17 +20,14 @@ export const getItem = async wordPhrase => {
   return userStudyItem.pop()
 }
 
-export const createItem = async item => {
-  await StudyModel.findOneAndUpdate(
-    { user: 'admin@gmail.com' },
-    { $push: { items: item } }
-  )
+export const createItem = async (item, userId) => {
+  await StudyModel.findOneAndUpdate({ userId }, { $push: { items: item } })
 }
 
-export const updateItem = async item => {
+export const updateItem = async (item, userId) => {
   await StudyModel.findOneAndUpdate(
     {
-      user: 'admin@gmail.com',
+      userId,
       'items.wordPhrase': new RegExp(item.wordPhrase, 'i')
     },
     {
@@ -74,7 +71,7 @@ export const buildItemFromRequetData = requestData => {
     item.lessonIds = [requestData.lessonId]
   }
 
-  item.nextReviewDate = moment().format('YYYY-MM-DD HH:mm')
+  item.nextReviewDate = moment('2020-01-01 01:01').format('YYYY-MM-DD HH:mm')
 
   return item
 }
@@ -91,6 +88,7 @@ export const trimPhraseWithTokenizer = phrase => {
 
 export const getItemsToReview = async lessonId => {
   let { items } = await getItems()
+
   if (lessonId) {
     items = items.filter(item => item.lessonIds.includes(lessonId))
   }
