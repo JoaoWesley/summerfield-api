@@ -8,7 +8,8 @@ import {
   review,
   evaluate,
   getPopularTranslation,
-  postPopularTranslation
+  postPopularTranslation,
+  getTranslation
 } from '../../controllers/api/studyController'
 
 const router = express()
@@ -22,5 +23,6 @@ router.get('/review/', review)
 router.post('/evaluate/', evaluate)
 router.get('/popular-translation/', getPopularTranslation)
 router.post('/popular-translation/', postPopularTranslation)
+router.get('/translation/', getTranslation)
 
 export default router
