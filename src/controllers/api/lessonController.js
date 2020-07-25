@@ -20,7 +20,8 @@ export const getLessonTopicsByLessonId = async (req, res) => {
   if (req.query.topicId) {
     const lesson = await lessonTopicsService.getLessonTopicsByIdAndTopic(
       req.params.id,
-      req.query.topicId
+      req.query.topicId,
+      res.userOnRequest.id
     )
     res.status(HttpStatus.OK).json(lesson)
     return

@@ -1,6 +1,7 @@
 import HttpStatus from 'http-status-codes'
 import * as studyService from '../../services/studyService'
 import * as popularTranslationService from '../..//services/popularTranslationService'
+import * as translationService from '../..//services/translationService'
 
 export const getItems = async (req, res) => {
   const items = await studyService.getItems(res.userOnRequest.id)
@@ -59,4 +60,10 @@ export const postPopularTranslation = async (req, res) => {
     req.body
   )
   res.status(HttpStatus.CREATED).json(translation)
+}
+
+export const getTranslation = async (req, res) => {
+  const { text } = req.query
+  const translation = await translationService.translate(text)
+  res.status(HttpStatus.OK).json(translation)
 }
