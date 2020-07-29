@@ -20,6 +20,10 @@ export const buildLessonFromRequestData = requestData => {
     lesson.text = requestData.text
   }
 
+  if (requestData.audioUrl) {
+    lesson.audioUrl = requestData.audioUrl
+  }
+
   lesson.fragment = requestData.text.substr(0, 27)
 
   return lesson
@@ -33,7 +37,8 @@ export const getLessons = async () => {
       title: 1,
       text: 1,
       hasTopics: 1,
-      fragment: 1
+      fragment: 1,
+      audioUrl: 1
     }
   ).exec()
   return lessons
@@ -57,7 +62,7 @@ export const createLesson = async lesson => {
 export const updateLesson = async lesson => {
   lesson.tokens = tokenService.tokenizeText(lesson.text)
 
-  await LessonModel.findOneAndUpdate(
+  return LessonModel.findOneAndUpdate(
     { _id: lesson._id },
     {
       $set: lesson

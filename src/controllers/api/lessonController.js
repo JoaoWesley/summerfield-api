@@ -44,9 +44,9 @@ export const postLesson = async (req, res) => {
 export const putLesson = async (req, res) => {
   const lesson = lessonService.buildLessonFromRequestData(req.body)
 
-  await lessonService.updateLesson(lesson)
+  const lessonUpdated = await lessonService.updateLesson(lesson)
 
-  res.status(HttpStatus.OK).end()
+  res.status(HttpStatus.OK).json(lessonUpdated)
 }
 
 export const putLessonTopic = async (req, res) => {
