@@ -20,6 +20,9 @@ const lessonSchema = new Schema(
     fragment: {
       type: String,
       required: true
+    },
+    audioUrl: {
+      type: String
     }
   },
   {
