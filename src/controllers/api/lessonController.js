@@ -4,7 +4,10 @@ import * as fileService from '../../services/file/fileService'
 import * as lessonTopicsService from '../../services/lessonTopicsService'
 
 export const getLessons = async (req, res) => {
-  const lessons = await lessonService.getLessons()
+  const lessons = await lessonService.getLessons(
+    res.userOnRequest.id,
+    req.query.shared
+  )
   res.status(HttpStatus.OK).json(lessons)
 }
 
@@ -36,7 +39,10 @@ export const getLessonTopicsByLessonId = async (req, res) => {
 export const postLesson = async (req, res) => {
   const lesson = lessonService.buildLessonFromRequestData(req.body)
 
-  const lessonCreated = await lessonService.createLesson(lesson)
+  const lessonCreated = await lessonService.createLesson({
+    ...lesson,
+    userId: res.userOnRequest.id
+  })
 
   res.status(HttpStatus.CREATED).json(lessonCreated)
 }

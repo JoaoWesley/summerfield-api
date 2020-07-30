@@ -4,6 +4,10 @@ const Schema = mongoose.Schema
 
 const lessonSchema = new Schema(
   {
+    userId: {
+      type: String,
+      required: true
+    },
     title: {
       type: String,
       required: true
@@ -23,6 +27,9 @@ const lessonSchema = new Schema(
     },
     audioUrl: {
       type: String
+    },
+    shared: {
+      type: Boolean
     }
   },
   {
