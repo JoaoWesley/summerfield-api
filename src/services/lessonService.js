@@ -24,23 +24,24 @@ export const buildLessonFromRequestData = requestData => {
     lesson.audioUrl = requestData.audioUrl
   }
 
+  if (requestData.shared !== undefined) {
+    lesson.shared = requestData.shared
+  }
+
   lesson.fragment = requestData.text.substr(0, 27)
 
   return lesson
 }
 
-export const getLessons = async () => {
-  const lessons = await LessonModel.find(
-    {},
-    {
-      _id: 1,
-      title: 1,
-      text: 1,
-      hasTopics: 1,
-      fragment: 1,
-      audioUrl: 1
-    }
-  ).exec()
+export const getLessons = async (userId, shared) => {
+  const lessons = await LessonModel.find(shared ? { shared } : { userId }, {
+    _id: 1,
+    title: 1,
+    text: 1,
+    hasTopics: 1,
+    fragment: 1,
+    audioUrl: 1
+  }).exec()
   return lessons
 }
 
