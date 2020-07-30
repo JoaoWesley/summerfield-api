@@ -8,6 +8,7 @@ import studyRoute from './routes/api/studyRoute'
 import userRoute from './routes/api//userRoute'
 import authRoute from './routes/api/authRoute'
 import emailRoute from './routes/api/emailRoute'
+import feedbackRoute from './routes/api/feedbackRoute'
 import cors from 'cors'
 import auth from './middlewares/authMiddleware'
 import cookieParser from 'cookie-parser'
@@ -23,6 +24,7 @@ app.use(cookieParser())
 app.use('/lesson', auth, lessonRoute)
 app.use('/word', auth, wordRoute)
 app.use('/study', auth, studyRoute)
+app.use('/feedback', auth, feedbackRoute)
 app.use('/user', userRoute)
 app.use('/auth', authRoute)
 app.use('/email', emailRoute)
