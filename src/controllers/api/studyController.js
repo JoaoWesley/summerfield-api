@@ -39,7 +39,10 @@ export const trimPhrase = (req, res) => {
 }
 
 export const review = async (req, res) => {
-  const items = await studyService.getItemsToReview(req.query.lessonId)
+  const items = await studyService.getItemsToReview(
+    req.query.lessonId,
+    res.userOnRequest.id
+  )
   res.status(HttpStatus.OK).json(items)
 }
 

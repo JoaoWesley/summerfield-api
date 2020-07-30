@@ -86,8 +86,9 @@ export const trimPhraseWithTokenizer = phrase => {
   return phrase
 }
 
-export const getItemsToReview = async lessonId => {
-  let { items } = await getItems()
+export const getItemsToReview = async (lessonId, userId) => {
+  let { items } = await getItems(userId)
+  console.log('que items', items)
 
   if (lessonId) {
     items = items.filter(item => item.lessonIds.includes(lessonId))
