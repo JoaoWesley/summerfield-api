@@ -78,7 +78,8 @@ export const importLesson = async (req, res) => {
     fileService.deleteFile(file.path)
     const lessonCreated = await lessonService.importLesson(
       fileTextAndTitle.text,
-      fileTextAndTitle.title || file.originalname
+      fileTextAndTitle.title || file.originalname,
+      res.userOnRequest.id
     )
     res.status(HttpStatus.CREATED).json(lessonCreated)
   } catch (error) {
