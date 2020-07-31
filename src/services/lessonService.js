@@ -28,7 +28,9 @@ export const buildLessonFromRequestData = requestData => {
     lesson.shared = requestData.shared
   }
 
-  lesson.fragment = requestData.text.substr(0, 27)
+  if (requestData.text) {
+    lesson.fragment = requestData.text.substr(0, 27)
+  }
 
   return lesson
 }
@@ -61,7 +63,9 @@ export const createLesson = async lesson => {
 }
 
 export const updateLesson = async lesson => {
-  lesson.tokens = tokenService.tokenizeText(lesson.text)
+  if (lesson.text) {
+    lesson.tokens = tokenService.tokenizeText(lesson.text)
+  }
 
   return LessonModel.findOneAndUpdate(
     { _id: lesson._id },
@@ -75,7 +79,7 @@ export const deleteLesson = async id => {
   await LessonModel.deleteOne({ _id: id })
 }
 
-export const importLesson = async (lessonText, title) => {
+export const importLesson = async (lessonText, title, userId) => {
   const lesson = {
     title,
     hasTopics: true,
@@ -86,7 +90,7 @@ export const importLesson = async (lessonText, title) => {
       )
       .substr(0, 27)
   }
-  const lessonCreated = await LessonModel.create(lesson)
+  const lessonCreated = await LessonModel.create({ userId, ...lesson })
   const lessonTokens = tokenService.tokenizeText(lessonText)
   const lessonTopics = []
   let index = 0

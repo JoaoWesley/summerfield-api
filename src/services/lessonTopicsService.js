@@ -52,7 +52,8 @@ export const updateLessonTopic = async (lessonId, lessonTopic) => {
       $set: {
         'topics.$.title': lessonTopic.title,
         'topics.$.tokens': lessonTopic.tokens,
-        'topics.$.text': lessonTopic.text
+        'topics.$.text': lessonTopic.text,
+        'topics.$.audioUrl': lessonTopic.audioUrl
       }
     }
   )
