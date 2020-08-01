@@ -24,6 +24,10 @@ export const buildLessonFromRequestData = requestData => {
     lesson.audioUrl = requestData.audioUrl
   }
 
+  if (requestData.imageUrl) {
+    lesson.imageUrl = requestData.imageUrl
+  }
+
   if (requestData.shared !== undefined) {
     lesson.shared = requestData.shared
   }
@@ -42,7 +46,8 @@ export const getLessons = async (userId, shared) => {
     text: 1,
     hasTopics: 1,
     fragment: 1,
-    audioUrl: 1
+    audioUrl: 1,
+    imageUrl: 1
   }).exec()
   return lessons
 }
@@ -88,7 +93,11 @@ export const importLesson = async (lessonText, title, userId) => {
         regexType.DOUBLE_LINE_BREAK_TAG,
         tokenSpacerType.DOUBLE_LINE_BREAK
       )
-      .substr(0, 27)
+      .substr(0, 27),
+    imageUrl:
+      '/images/lesson/lesson-default-' +
+      (Math.floor(Math.random() * 4) + 1) +
+      '.png'
   }
   const lessonCreated = await LessonModel.create({ userId, ...lesson })
   const lessonTokens = tokenService.tokenizeText(lessonText)
@@ -99,7 +108,11 @@ export const importLesson = async (lessonText, title, userId) => {
     lessonTopics.push({
       index,
       tokens: lessonTokens.splice(0, 1000),
-      title: `Parte ${index + 1}`
+      title: `Parte ${index + 1}`,
+      imageUrl:
+        '/images/lesson/lesson-default-' +
+        (Math.floor(Math.random() * 4) + 1) +
+        '.png'
     })
     lessonTopics[index].text = tokenService.createTextFromTokens(
       lessonTopics[index].tokens

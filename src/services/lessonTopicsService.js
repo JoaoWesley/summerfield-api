@@ -5,7 +5,12 @@ import * as tokenService from './tokenService'
 export const getLessonTopicsByLessonId = async lessonId => {
   const lessonTopics = await LessonTopicsModel.find(
     { lessonId: ObjectId(lessonId) },
-    { 'topics.title': 1, 'topics.index': 1, 'topics.text': 1 }
+    {
+      'topics.title': 1,
+      'topics.index': 1,
+      'topics.text': 1,
+      'topics.imageUrl': 1
+    }
   ).exec()
 
   let topics = []
