@@ -28,6 +28,10 @@ const lessonSchema = new Schema(
     audioUrl: {
       type: String
     },
+    imageUrl: {
+      type: String,
+      required: true
+    },
     shared: {
       type: Boolean
     }
