@@ -18,7 +18,7 @@ export const tokenizeText = text => {
     token = {}
     token.index = index
     token.text = text
-    if (text.match(regexType.WORD)) {
+    if (text.match(regexType.WORD) && !text.match(regexType.INVALID_WORD)) {
       token.type = tokenType.WORD
     } else if (text.match(regexType.NUMBER)) {
       token.type = tokenType.NUMBER
@@ -35,7 +35,10 @@ export const mapTokenStatus = async (tokens, userId) => {
   let userWords = (await WordsModel.findOne({ userId }).exec()).words
 
   tokens.map(token => {
-    if (token.text.match(/[a-z]+/i)) {
+    if (
+      token.text.match(/[a-z]+/i) &&
+      !token.text.match(regexType.INVALID_WORD)
+    ) {
       const wordDealtAlready = userWords.find(
         element => element.text.toLowerCase() === token.text.toLowerCase()
       )
