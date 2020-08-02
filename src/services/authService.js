@@ -10,7 +10,7 @@ import wordsModel from './../models/wordsModel'
 export const registerUser = async (email, password, name) => {
   let user = new User({ email, password, name })
   const token = jwt.sign({ id: user._id }, variables.JWT_SECRET, {
-    expiresIn: constants.TOKEN_EXPIRATION_TIME
+    expiresIn: constants.TOKEN_EXPIRATION_TIME_JWT
   })
   const payload = { user, token }
 
@@ -26,7 +26,7 @@ export const loginUserAndReturnPayloadWithToken = async (user, password) => {
 
   if (isMatch) {
     const token = jwt.sign({ id: user._id }, variables.JWT_SECRET, {
-      expiresIn: constants.TOKEN_EXPIRATION_TIME
+      expiresIn: constants.TOKEN_EXPIRATION_TIME_JWT
     })
 
     userService.updateUser(user._id, {

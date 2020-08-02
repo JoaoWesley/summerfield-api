@@ -25,7 +25,8 @@ export const register = async (req, res) => {
 
     const payload = await authService.registerUser(email, password, name)
     res.cookie('token', payload.token, {
-      maxAge: constants.TOKEN_EXPIRATION_TIME
+      maxAge: constants.TOKEN_EXPIRATION_TIME_COOKIE,
+      expires: new Date(Date.now() + constants.TOKEN_EXPIRATION_TIME_COOKIE)
     })
     res.status(HttpStatus.CREATED).json(payload)
   } catch (error) {
@@ -55,7 +56,8 @@ export const login = async (req, res) => {
     )
     if (userLoggedInPayload) {
       res.cookie('token', userLoggedInPayload.token, {
-        maxAge: constants.TOKEN_EXPIRATION_TIME
+        maxAge: constants.TOKEN_EXPIRATION_TIME_COOKIE,
+        expires: new Date(Date.now() + constants.TOKEN_EXPIRATION_TIME_COOKIE)
       })
       return res.status(HttpStatus.OK).json(userLoggedInPayload)
     }
