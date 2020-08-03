@@ -28,7 +28,7 @@ export const updateItem = async (item, userId) => {
   await StudyModel.findOneAndUpdate(
     {
       userId,
-      'items.wordPhrase': new RegExp(item.wordPhrase, 'i')
+      'items.wordPhrase': new RegExp('^' + item.wordPhrase + '$', 'i')
     },
     {
       $set: {
@@ -88,16 +88,6 @@ export const trimPhraseWithTokenizer = phrase => {
 
 export const getItemsToReview = async (lessonId, userId) => {
   let { items } = await getItems(userId)
-  console.log('que items', items)
-
-  if (lessonId) {
-    items = items.filter(item => item.lessonIds.includes(lessonId))
-  }
-  items.sort(
-    (a, b) =>
-      new Date(a.nextReviewDate).getTime() -
-      new Date(b.nextReviewDate).getTime()
-  )
 
   const reviewedInLast24hours = items.filter(item => {
     const diffInHoursLastReviewed = moment().diff(
@@ -111,6 +101,23 @@ export const getItemsToReview = async (lessonId, userId) => {
   })
 
   if (lessonId) {
+    items = items.filter(item => item.lessonIds.includes(lessonId))
+  }
+  items.sort(
+    (a, b) =>
+      new Date(a.nextReviewDate).getTime() -
+      new Date(b.nextReviewDate).getTime()
+  )
+
+  const getItemsAvailableToReview = () => {
+    return items.filter(
+      item =>
+        moment(item.nextReviewDate).format('YYYY-MM-DD HH:mm') <=
+        moment().format('YYYY-MM-DD HH:mm')
+    )
+  }
+
+  if (lessonId) {
     let maxNumberItemsReview = 20
     maxNumberItemsReview =
       items.length < maxNumberItemsReview ? items.length : maxNumberItemsReview
@@ -120,15 +127,17 @@ export const getItemsToReview = async (lessonId, userId) => {
     numberOfItemsToReview =
       numberOfItemsToReview > 0 ? numberOfItemsToReview : 0
     if (numberOfItemsToReview) {
+      items = getItemsAvailableToReview()
+
       return items.slice(0, numberOfItemsToReview)
     }
     return []
   }
 
-  return items
+  return getItemsAvailableToReview()
 }
 
-export const evaluate = async item => {
+export const evaluate = async (item, userId) => {
   let { evaluation } = item
   item.evaluation = supermemo2(
     evaluation.quality,
@@ -141,6 +150,6 @@ export const evaluate = async item => {
     .add(item.evaluation.schedule, 'day')
     .format('YYYY-MM-DD HH:mm')
 
-  await updateItem(item)
+  await updateItem(item, userId)
   return item
 }
