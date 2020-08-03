@@ -47,7 +47,7 @@ export const review = async (req, res) => {
 }
 
 export const evaluate = async (req, res) => {
-  const evaluation = await studyService.evaluate(req.body)
+  const evaluation = await studyService.evaluate(req.body, res.userOnRequest.id)
   res.status(HttpStatus.OK).json(evaluation)
 }
 
