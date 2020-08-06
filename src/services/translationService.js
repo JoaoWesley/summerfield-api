@@ -1,6 +1,11 @@
 import variables from '../config/envVariablesConfig'
 import { TranslationServiceClient } from '@google-cloud/translate'
-import translatioMock from '../../test/mocks/translationMock'
+const translatioMock = {
+  translatedText: 'vocês',
+  model: '',
+  glossaryConfig: null,
+  detectedLanguageCode: ''
+}
 const projectId = variables.GCP_PROJECT_ID
 const location = 'global'
 
