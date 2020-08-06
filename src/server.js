@@ -33,4 +33,4 @@ app.get('/', (req, res) => {
   res.json({ ok: 'true' })
 })
 
-app.listen(variables.PORT)
+app.listen(process.env.PORT || variables.PORT)
