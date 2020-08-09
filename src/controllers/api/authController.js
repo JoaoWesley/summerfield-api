@@ -5,6 +5,7 @@ import responseCodeTypes from '../../commons/types/responseCodeTypes'
 import emailValidator from 'email-validator'
 import constants from '../../commons/constants'
 import responseCodeTypes from '../../commons/types/responseCodeTypes'
+import envVariablesConfig from '../../config/envVariablesConfig'
 
 export const register = async (req, res) => {
   const { email, password, name } = req.body
@@ -26,7 +27,9 @@ export const register = async (req, res) => {
     const payload = await authService.registerUser(email, password, name)
     res.cookie('token', payload.token, {
       maxAge: constants.TOKEN_EXPIRATION_TIME_COOKIE,
-      expires: new Date(Date.now() + constants.TOKEN_EXPIRATION_TIME_COOKIE)
+      expires: new Date(Date.now() + constants.TOKEN_EXPIRATION_TIME_COOKIE),
+      secure: true,
+      domain: envVariablesConfig.DOMAIN
     })
     res.status(HttpStatus.CREATED).json(payload)
   } catch (error) {
@@ -57,7 +60,9 @@ export const login = async (req, res) => {
     if (userLoggedInPayload) {
       res.cookie('token', userLoggedInPayload.token, {
         maxAge: constants.TOKEN_EXPIRATION_TIME_COOKIE,
-        expires: new Date(Date.now() + constants.TOKEN_EXPIRATION_TIME_COOKIE)
+        expires: new Date(Date.now() + constants.TOKEN_EXPIRATION_TIME_COOKIE),
+        secure: true,
+        domain: envVariablesConfig.DOMAIN
       })
       return res.status(HttpStatus.OK).json(userLoggedInPayload)
     }

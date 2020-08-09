@@ -30,9 +30,6 @@
     "sucrase": "^3.13.0"
   },
   "dependencies": {
-    "nyc": "^15.1.0",
-    "sucrase": "^3.13.0",
-
     "@google-cloud/translate": "^6.0.2",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
