@@ -21,14 +21,14 @@ export const getConfirmationEmailURL = (user, token) => {
 export const resetPasswordTemplate = (user, url) => {
   const from = variables.EMAIL_SENDER_LOGIN
   const to = user.email
-  const subject = 'English Everywhere criar nova senha'
+  const subject = 'Summerfield criar nova senha'
   const html = `
   <p>Olá ${user.name || user.email},</p>
   <p>Vimos que você esqueceu sua senha de acesso. Sentimos muito por isso!</p>
   <p>Mas não se preocupe! Você pode utilizar o link a seguir para criar uma nova senha:</p>
   <a href=${url}>${url}</a>
   <p>Se você não utilizar esse link dentro de 24 horas ele vai se expirar.</p>  
-  <p>–English everywhere</p>
+  <p>–Summerfield</p>
   `
   // const html = `
   // <p>Hey ${user.name || user.email},</p>
@@ -46,13 +46,13 @@ export const resetPasswordTemplate = (user, url) => {
 export const confirmationTemplate = (user, url) => {
   const from = variables.EMAIL_SENDER_LOGIN
   const to = user.email
-  const subject = 'English Everywhere confirme seu e-mail'
+  const subject = 'Summerfield confirme seu e-mail'
   const html = `
   <p>Olá ${user.name || user.email},</p>
   <p>Para prosseguir com seu cadastro precisamos confirmar o seu e-mail, para isso clique no link a seguir</p>  
   <a href=${url}>${url}</a>
   <p>Se você não utilizar esse link dentro de 24 horas ele vai se expirar.</p>    
-  <p>–English everywhere</p>
+  <p>–Summerfield</p>
   `
   // const html = `
   // <p>Hey ${user.name || user.email},</p>
