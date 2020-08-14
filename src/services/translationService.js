@@ -1,17 +1,22 @@
 import variables from '../config/envVariablesConfig'
 import { TranslationServiceClient } from '@google-cloud/translate'
-const translatioMock = {
-  translatedText: 'vocês',
-  model: '',
-  glossaryConfig: null,
-  detectedLanguageCode: ''
-}
+const translatioMock = [
+  {
+    translatedText: 'vocês',
+    model: '',
+    glossaryConfig: null,
+    detectedLanguageCode: ''
+  }
+]
 const projectId = variables.GCP_PROJECT_ID
 const location = 'global'
 
 export const translate = async text => {
   // Instantiates a client
-  const translationClient = new TranslationServiceClient()
+  const translationClient = new TranslationServiceClient({
+    projectId,
+    keyFilename: variables.GCP_KEY_FILENAME
+  })
 
   // Construct request
   const request = {
