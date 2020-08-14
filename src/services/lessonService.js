@@ -47,7 +47,8 @@ export const getLessons = async (userId, shared) => {
     hasTopics: 1,
     fragment: 1,
     audioUrl: 1,
-    imageUrl: 1
+    imageUrl: 1,
+    shared: 1
   }).exec()
   return lessons
 }

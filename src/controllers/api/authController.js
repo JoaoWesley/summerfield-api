@@ -29,7 +29,7 @@ export const register = async (req, res) => {
       maxAge: constants.TOKEN_EXPIRATION_TIME_COOKIE,
       expires: new Date(Date.now() + constants.TOKEN_EXPIRATION_TIME_COOKIE),
       //secure: true,
-      httpOnly: true,
+      //httpOnly: true,
       domain: envVariablesConfig.DOMAIN
     })
     res.status(HttpStatus.CREATED).json(payload)
@@ -63,7 +63,7 @@ export const login = async (req, res) => {
         maxAge: constants.TOKEN_EXPIRATION_TIME_COOKIE,
         expires: new Date(Date.now() + constants.TOKEN_EXPIRATION_TIME_COOKIE),
         //secure: true,
-        httpOnly: true,
+        //httpOnly: true,
         domain: envVariablesConfig.DOMAIN
       })
       return res.status(HttpStatus.OK).json(userLoggedInPayload)
@@ -139,7 +139,7 @@ export const logout = async (req, res) => {
   res.cookie('token', '', {
     expires: Date.now(),
     //secure: true,
-    httpOnly: true,
+    //httpOnly: true,
     maxAge: 0,
     overwrite: true,
     domain: envVariablesConfig.DOMAIN
