@@ -28,7 +28,8 @@ export const register = async (req, res) => {
     res.cookie('token', payload.token, {
       maxAge: constants.TOKEN_EXPIRATION_TIME_COOKIE,
       expires: new Date(Date.now() + constants.TOKEN_EXPIRATION_TIME_COOKIE),
-      secure: true,
+      //secure: true,
+      httpOnly: true,
       domain: envVariablesConfig.DOMAIN
     })
     res.status(HttpStatus.CREATED).json(payload)
@@ -61,7 +62,8 @@ export const login = async (req, res) => {
       res.cookie('token', userLoggedInPayload.token, {
         maxAge: constants.TOKEN_EXPIRATION_TIME_COOKIE,
         expires: new Date(Date.now() + constants.TOKEN_EXPIRATION_TIME_COOKIE),
-        secure: true,
+        //secure: true,
+        httpOnly: true,
         domain: envVariablesConfig.DOMAIN
       })
       return res.status(HttpStatus.OK).json(userLoggedInPayload)
@@ -131,4 +133,16 @@ export const confirmEmail = async (req, res) => {
   } catch (error) {
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(error)
   }
+}
+
+export const logout = async (req, res) => {
+  res.cookie('token', '', {
+    expires: Date.now(),
+    //secure: true,
+    httpOnly: true,
+    maxAge: 0,
+    overwrite: true,
+    domain: envVariablesConfig.DOMAIN
+  })
+  res.status(HttpStatus.OK).json({ message: 'user logout' })
 }

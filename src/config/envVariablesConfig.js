@@ -11,5 +11,6 @@ export default {
   EMAIL_SENDER_PASSWORD: process.env.EMAIL_SENDER_PASSWORD,
   CLIENT_BASE_URL: process.env.CLIENT_BASE_URL,
   GCP_PROJECT_ID: process.env.GCP_PROJECT_ID,
+  GCP_KEY_FILENAME: process.env.GCP_KEY_FILENAME,
   DOMAIN: process.env.DOMAIN
 }

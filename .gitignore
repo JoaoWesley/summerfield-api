@@ -4,6 +4,8 @@
 # Dependency directories
 node_modules/
 
+# Google cloud files
+gcp/
 
 # Created by .ignore support plugin (hsz.mobi)
 ### Node template
