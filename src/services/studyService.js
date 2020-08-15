@@ -118,10 +118,7 @@ export const getItemsToReview = async (lessonId, userId) => {
   }
 
   if (lessonId) {
-    let maxNumberItemsReview = 20
-    maxNumberItemsReview =
-      items.length < maxNumberItemsReview ? items.length : maxNumberItemsReview
-
+    const maxNumberItemsReview = 20
     let numberOfItemsToReview =
       maxNumberItemsReview - reviewedInLast24hours.length
     numberOfItemsToReview =
@@ -138,7 +135,7 @@ export const getItemsToReview = async (lessonId, userId) => {
 }
 
 export const evaluate = async (item, userId) => {
-  let { evaluation } = item
+  const { evaluation } = item
   item.evaluation = supermemo2(
     evaluation.quality,
     evaluation.schedule,
