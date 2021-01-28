@@ -1,3 +1,3 @@
 # Summerfield-api
 
-Api used by summerfield application: https://summerfield.app.br/
+Api used by Summerfield app: https://summerfield.app.br/
