@@ -7,7 +7,7 @@ Summerfield is an application aimed at the study of English, where the main focu
 I developed this application mainly to learn new technologies like Vue.js / Nuxt and build a tool that I find helpful for me and other people.
 
 Technologies used:
-• Node.js (express)
-• Nuxt.js
-• Vuetify
-• MongoDb
+ - Node.js (express)
+ - Nuxt.js
+ - Vuetify
+ - MongoDb
